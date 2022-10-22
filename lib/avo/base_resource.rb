@@ -48,6 +48,7 @@ module Avo
     class_attribute :record_selector, default: true
     class_attribute :keep_filters_panel_open, default: false
     class_attribute :extra_params
+    class_attribute :single_table_inheritance_resource, default: :parent_resource
 
     class << self
       delegate :t, to: ::I18n

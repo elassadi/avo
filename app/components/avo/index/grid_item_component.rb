@@ -2,6 +2,7 @@
 
 class Avo::Index::GridItemComponent < ViewComponent::Base
   include Avo::ResourcesHelper
+  include Avo::StiResourcesHelper
 
   attr_reader :parent_resource
 
@@ -37,6 +38,6 @@ class Avo::Index::GridItemComponent < ViewComponent::Base
       }
     end
 
-    helpers.resource_view_path(model: @resource.model, resource: @resource, **args)
+    helpers.resource_view_path(model: @resource.model, resource: parent_or_child_resource, **args)
   end
 end

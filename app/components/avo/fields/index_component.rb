@@ -2,6 +2,7 @@
 
 class Avo::Fields::IndexComponent < ViewComponent::Base
   include Avo::ResourcesHelper
+  include Avo::StiResourcesHelper
 
   attr_reader :parent_resource
   attr_reader :view
@@ -15,6 +16,8 @@ class Avo::Fields::IndexComponent < ViewComponent::Base
     @view = :index
   end
 
+
+
   def resource_view_path
     args = {}
 
@@ -25,7 +28,7 @@ class Avo::Fields::IndexComponent < ViewComponent::Base
       }
     end
 
-    helpers.resource_view_path(model: @resource.model, resource: @resource, **args)
+    helpers.resource_view_path(model: @resource.model, resource: parent_or_child_resource, **args)
   end
 
   def field_wrapper_args

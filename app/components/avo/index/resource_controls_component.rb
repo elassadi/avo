@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
+  include Avo::StiResourcesHelper
+
   def initialize(resource: nil, reflection: nil, parent_model: nil, parent_resource: nil, view_type: :table)
     @resource = resource
     @reflection = reflection
@@ -41,7 +43,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
       }
     end
 
-    helpers.resource_path(model: @resource.model, resource: @resource, **args)
+    helpers.resource_path(model: @resource.model, resource: parent_or_child_resource , **args)
   end
 
   def edit_path
@@ -55,8 +57,9 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
       }
     end
 
-    helpers.edit_resource_path(model: @resource.model, resource: @resource, **args)
+    helpers.edit_resource_path(model: @resource.model, resource: parent_or_child_resource, **args)
   end
+
 
   def singular_resource_name
     if @reflection.present?
