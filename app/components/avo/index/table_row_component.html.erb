@@ -1,6 +1,7 @@
 <tr
-  class="bg-white hover:bg-gray-50 hover:shadow-row hover:z-[21] relative z-20 border-b"
+  class="bg-white hover:bg-gray-50 hover:shadow-row hover:z-[21] relative z-20 border-b "
   <%== item_selector_init @resource %>
+  data-action="click->item-selector#rowClicked"
 >
   <% if @resource.record_selector %>
     <td class="w-10">

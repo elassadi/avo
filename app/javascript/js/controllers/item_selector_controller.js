@@ -1,7 +1,7 @@
 import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
-  static targets = ['panel'];
+  static targets = ['panel','view'];
 
   checkbox = {};
 
@@ -39,6 +39,7 @@ export default class extends Controller {
     }
   }
 
+
   connect() {
     this.resourceName = this.element.dataset.resourceName
     this.resourceId = this.element.dataset.resourceId
@@ -48,6 +49,10 @@ export default class extends Controller {
     this.stateHolderElement = document.querySelector(
       `[data-selected-resources-name="${this.resourceName}"]`,
     )
+  }
+
+  rowClicked(){
+    this.viewTarget.click()
   }
 
   addToSelected() {
