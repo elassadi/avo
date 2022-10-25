@@ -56,9 +56,10 @@ module Avo
 
     def action_class
       klass_name = params[:action_id].gsub("avo_actions_", "").camelize
+      resource_klass = params[:resource_name].camelize
 
       Avo::BaseAction.descendants.find do |action|
-        action.to_s == klass_name
+        [klass_name, "#{resource_klass}::#{klass_name}"].include?(action.to_s)
       end
     end
 
