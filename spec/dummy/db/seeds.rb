@@ -130,6 +130,7 @@ people = FactoryBot.create_list(:person, 12)
 people.each do |person|
   person.spouses << FactoryBot.create(:spouse)
   person.relatives << FactoryBot.create(:sibling)
+  person.relatives << FactoryBot.create(:brother)
 end
 
 puts "Creating reviews"
