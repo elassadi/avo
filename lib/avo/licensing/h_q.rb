@@ -120,12 +120,11 @@ module Avo
 
       def make_request
 
-      return
-        {"id"=>"community",
+      return {
+        "id"=>"community",
         "valid"=>true,
         "payload"=>{},
         "expiry"=>3600,
-        "fetched_at"=>2022-11-07 14:45:29.875177 +0100,
         "license"=>"community",
         "license_key"=>nil,
         "avo_version"=>"2.18.0",
