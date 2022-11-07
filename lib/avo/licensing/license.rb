@@ -14,14 +14,17 @@ module Avo
       end
 
       def valid?
+        return true
         valid
       end
 
       def invalid?
+        return false
         !valid?
       end
 
       def pro?
+        return true
         id == "pro"
       end
 
@@ -38,10 +41,12 @@ module Avo
       end
 
       def can(ability)
+        return true
         abilities.include? ability
       end
 
       def cant(ability)
+        return false
         !can ability
       end
 
@@ -50,6 +55,7 @@ module Avo
 
       # Returns if has ability and if is a valid license or app is in development.
       def has_with_trial(ability)
+        return true
         return can(ability) && valid? if Rails.env.production?
 
         true
