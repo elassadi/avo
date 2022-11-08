@@ -118,7 +118,7 @@ module Avo
         resource = target_resource
         resource = App.get_resource_by_model_name model if model.present?
 
-        query = Avo::Services::AuthorizationService.apply_policy(user, resource.class.query_scope)
+        query = Avo::Services::AuthorizationService.apply_policy(user, resource.class.query_scope, policy_class: resource.authorization_policy)
 
         if attach_scope.present?
           query = Avo::Hosts::AssociationScopeHost.new(block: attach_scope, query: query, parent: get_model).handle
