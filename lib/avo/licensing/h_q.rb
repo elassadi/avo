@@ -159,7 +159,6 @@ module Avo
           cache_and_return_error "Connection error.", exception.message
         end
 
-        binding.pry
         result
       end
 

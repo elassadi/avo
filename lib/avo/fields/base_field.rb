@@ -14,6 +14,7 @@ module Avo
       include Avo::Concerns::HasHTMLAttributes
       include Avo::Fields::Concerns::IsRequired
       include Avo::Fields::Concerns::IsReadonly
+      include Avo::Fields::Concerns::IsUpdatable
       include Avo::Fields::Concerns::HasDefault
 
       delegate :view_context, to: ::Avo::App
@@ -84,7 +85,7 @@ module Avo
 
         @args = args
 
-        @updatable = !readonly
+        @updatable = nil
         @computable = true
         @computed = block.present?
         @computed_value = nil

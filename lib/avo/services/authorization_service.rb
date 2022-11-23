@@ -28,11 +28,12 @@ module Avo
         end
 
         def authorize(user, record, action, policy_class: nil, **args)
+          #Rails.logger.debug "AUTHORIZATION ----------- Start ------ for #{action} on #{record.is_a?(Class) ? record.name : record.class.name}"
           return true if skip_authorization
           return true if user.nil?
 
           client.authorize user, record, action, policy_class: policy_class
-
+          #Rails.logger.debug "AUTHORIZATION ----------- True ------ for #{action} on #{record.is_a?(Class) ? record.name : record.class.name}"
           true
         rescue NoPolicyError => error
           # By default, Avo allows anything if you don't have a policy present.
@@ -41,8 +42,10 @@ module Avo
           raise error
         rescue => error
           if args[:raise_exception] == false
+            #Rails.logger.debug "AUTHORIZATION ----------- False ------ for #{action} on #{record.is_a?(Class) ? record.name : record.class.name}"
             false
           else
+            #Rails.logger.debug "AUTHORIZATION --- False with exception ------ for #{action} on #{record.is_a?(Class) ? record.name : record.class.name}"
             raise error
           end
         end
@@ -119,7 +122,10 @@ module Avo
       end
 
       def authorize_action(action, **args)
-        self.class.authorize_action(user, record, action, policy_class: policy_class, **args)
+        result = self.class.authorize_action(user, record, action, policy_class: policy_class, **args)
+
+        #Rails.logger.debug "AUTHORIZATION --->>> #{action} on #{record.to_s} result #{result}"
+        result
       end
 
       def apply_policy(model)
@@ -131,7 +137,8 @@ module Avo
       end
 
       def has_method?(method, **args)
-        defined_methods(record, **args).include? method.to_sym
+        return true
+        # defined_methods(record, **args).include? method.to_sym
       end
     end
   end

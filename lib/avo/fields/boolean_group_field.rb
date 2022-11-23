@@ -1,16 +1,26 @@
 module Avo
   module Fields
     class BooleanGroupField < BaseField
-      attr_reader :options
+      #attr_reader :options
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
-
         @options = args[:options].present? ? args[:options] : {}
       end
 
       def to_permitted_param
         ["#{id}": []]
+      end
+
+
+
+      def options
+
+        return @options if @options.is_a? Hash
+        return {} unless  @options.respond_to? :call
+
+
+        return Avo::Hosts::RecordHost.new(block: @options, record: model).handle
       end
 
       def fill_field(model, key, value, params)

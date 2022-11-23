@@ -108,6 +108,11 @@ module Avo
 
       @page_title = @resource.default_panel_name.to_s
 
+      if (params[:via_cloned_id])
+        via_cloned_model = @resource.class.find_scope.find params[:via_cloned_id]
+        @resource.hydrate model: via_cloned_model
+      end
+
       if is_associated_record?
         via_resource = Avo::App.get_resource_by_model_name(params[:via_relation_class]).dup
         via_model = via_resource.class.find_scope.find params[:via_resource_id]
@@ -167,6 +172,7 @@ module Avo
     def update
       # model gets instantiated and filled in the fill_model method
       saved = save_model
+
       @resource = @resource.hydrate(model: @model, view: :edit, user: _current_user)
       set_actions
 
@@ -221,7 +227,10 @@ module Avo
         # In case there's an error somewhere else than the model
         # Example: When you save a license that should create a user for it and creating that user throws and error.
         # Example: When you Try to delete a record and has a foreign key constraint.
-        @errors = Array.wrap(exception.message)
+
+        message = exception.record.errors.full_messages if exception.respond_to?("record")
+        message ||= exception.message
+        @errors = Array.wrap(message)
       end
 
       succeeded
@@ -239,7 +248,7 @@ module Avo
     end
 
     def permitted_params
-      @resource.get_field_definitions.select(&:updatable).map(&:to_permitted_param).concat extra_params
+      @resource.get_field_definitions.select(&:is_updatable?).map(&:to_permitted_param).concat extra_params
     end
 
     def extra_params
