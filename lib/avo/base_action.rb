@@ -72,6 +72,14 @@ module Avo
       @response[:messages] = []
     end
 
+    def get_message
+      if self.class.message.respond_to? :call
+        Avo::Hosts::ResourceRecordHost.new(block: self.class.message, record: self.class.model, resource: self.class.resource).handle
+      else
+        self.class.message
+      end
+    end
+
     def get_attributes_for_action
       get_fields.map do |field|
         [field.id, field.value || field.default]
@@ -116,7 +124,7 @@ module Avo
       self
     end
 
-    def visible_in_view(parent_model: nil, parent_resource: nil)
+    def visible_in_view(parent_resource: nil)
       if visible.blank?
         # Hide on the :new view by default
         return false if view == :new
@@ -128,9 +136,7 @@ module Avo
       # Run the visible block if available
       Avo::Hosts::VisibilityHost.new(
         block: visible,
-        model: self.class.model,
         params: params,
-        parent_model: parent_model,
         parent_resource: parent_resource,
         resource: self.class.resource,
         view: self.class.view,
