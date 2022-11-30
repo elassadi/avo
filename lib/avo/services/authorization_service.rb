@@ -32,7 +32,7 @@ module Avo
           return true if skip_authorization
           return true if user.nil?
 
-          client.authorize user, record, action, policy_class: policy_class
+          client.authorize user, record, action, policy_class: policy_class, **args
           #Rails.logger.debug "AUTHORIZATION ----------- True ------ for #{action} on #{record.is_a?(Class) ? record.name : record.class.name}"
           true
         rescue NoPolicyError => error
