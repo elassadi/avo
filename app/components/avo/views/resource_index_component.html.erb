@@ -1,4 +1,5 @@
-<% if @resources.present? || can_see_the_create_button? %>
+
+<% if @resources.present? || can_see_the_create_button? || @filters&.any?{|f| f.arguments.present?} %>
   <%= content_tag :div,
     data: {
       model_name: @resource.model_name.to_s,

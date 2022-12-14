@@ -61,8 +61,8 @@ class Avo::ResourceComponent < Avo::BaseComponent
       reflection_resource = field.resource
       # Fetch the model
       # Hydrate the resource with the model if we have one
-      reflection_resource.hydrate(model: @parent_model) if @parent_model.present?
-      reflection_resource.hydrate(model: @reflection.klass.new)
+      #reflection_resource.hydrate(model: @parent_model) if @parent_model.present?
+      reflection_resource.hydrate(model: resource.model)
       # Use the related_name as the base of the association
       association_name = @reflection.name
 
