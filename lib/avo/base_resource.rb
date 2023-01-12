@@ -246,9 +246,7 @@ module Avo
     end
 
     def translation_key
-      return "avo.resource_translations.#{class_name_without_resource.underscore}" if ::Avo::App.translation_enabled
-
-      self.class.translation_key
+      self.class.translation_key || "avo.resource_translations.#{class_name_without_resource.underscore}"
     end
 
     def name
