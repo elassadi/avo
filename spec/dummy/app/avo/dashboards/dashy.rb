@@ -7,6 +7,10 @@ class Dashy < Avo::Dashboards::BaseDashboard
   #   true
   # end
 
+  self.authorize = -> do
+    current_user.is_admin?
+  end
+
   card ExampleMetric
   card ExampleAreaChart
   card ExampleScatterChart
@@ -17,11 +21,12 @@ class Dashy < Avo::Dashboards::BaseDashboard
       active_users: true
     }
   card PercentDone
-  card ExampleLineChart, cols: 1
+  card ExampleLineChart, cols: 2
   card AmountRaised
   card ExampleColumnChart
   card ExamplePieChart
-  card ExampleBarChart
+  card ExampleBarChart, cols: 2
+  card MetricFromParam
 
   divider label: "Custom partials"
 

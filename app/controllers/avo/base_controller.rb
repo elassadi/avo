@@ -14,6 +14,7 @@ module Avo
     before_action :fill_model, only: [:create, :update]
     # Don't run base authorizations for associations
     before_action :authorize_base_action, if: -> { controller_name != "associations" }
+    before_action :set_pagy_locale, only: :index
 
     def index
       @page_title = @resource.plural_name.humanize
@@ -229,14 +230,11 @@ module Avo
         # In case there's an error somewhere else than the model
         # Example: When you save a license that should create a user for it and creating that user throws and error.
         # Example: When you Try to delete a record and has a foreign key constraint.
-
-        message = exception.record.errors.full_messages if exception.respond_to?("record")
-        message ||= exception.message
-        @errors = Array.wrap(message)
+        exception_message = exception.message
       end
 
       # Add the errors from the model
-      @errors = Array.wrap([@errors, @model.errors.full_messages]).compact
+      @errors = @model.errors.full_messages.reject { |error| exception_message.include? error }.unshift exception_message
 
       succeeded
     end
@@ -253,7 +251,7 @@ module Avo
     end
 
     def permitted_params
-      @resource.get_field_definitions.select(&:is_updatable?).map(&:to_permitted_param).concat extra_params
+      @resource.get_field_definitions.select(&:updatable).map(&:to_permitted_param).concat extra_params
     end
 
     def extra_params
@@ -518,6 +516,11 @@ module Avo
 
     def is_associated_record?
       params[:via_relation_class].present? && params[:via_resource_id].present?
+    end
+
+    # Set pagy locale from params or from avo configuration, if both nil locale = "en"
+    def set_pagy_locale
+      @pagy_locale = locale.to_s || Avo.configuration.locale || "en"
     end
   end
 end
