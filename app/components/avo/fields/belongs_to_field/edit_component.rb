@@ -53,6 +53,22 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
     @field.get_html(:data, view: view, element: :input).fetch(:action, nil)
   end
 
+
+  def modal_create_path
+
+    args = {
+      modal_resource: true
+    }
+
+    reflection = field.model._reflections[@field.id.to_s]
+    helpers.new_resource_path(resource: @field.target_resource, **args)
+  end
+
+
+  def modal_resource?
+    params[:modal_resource].present?
+  end
+
   private
 
   def visit_through_association?

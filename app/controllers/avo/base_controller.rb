@@ -122,6 +122,10 @@ module Avo
 
       add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
       add_breadcrumb t("avo.new").humanize
+
+      respond_to do |format|
+        format.html { render params[:modal_resource] ? :new_modal : :new}
+      end
     end
 
     def create
@@ -405,6 +409,13 @@ module Avo
 
     def create_success_action
       respond_to do |format|
+        if params[:modal_resource]
+          format.turbo_stream do
+            render turbo_stream: [
+              turbo_stream.update("modal_resource", "")
+            ]
+          end
+        end
         format.html { redirect_to after_create_path, notice: create_success_message}
       end
     end
@@ -412,7 +423,7 @@ module Avo
     def create_fail_action
       respond_to do |format|
         flash.now[:error] = create_fail_message
-        format.html { render :new, status: :unprocessable_entity }
+        format.html { render params[:modal_resource] ? :new_modal : :new , status: :unprocessable_entity }
       end
     end
 
