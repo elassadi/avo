@@ -13,7 +13,7 @@ module Avo
       end
 
 
-
+      #PATCH-TODO
       def options
 
         return @options if @options.is_a? Hash

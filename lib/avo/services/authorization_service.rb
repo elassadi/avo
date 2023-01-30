@@ -28,12 +28,11 @@ module Avo
         end
 
         def authorize(user, record, action, policy_class: nil, **args)
-          #Rails.logger.debug "AUTHORIZATION ----------- Start ------ for #{action} on #{record.is_a?(Class) ? record.name : record.class.name}"
           return true if skip_authorization
-          return true if user.nil?
 
+          #PATCH-TODO
           client.authorize user, record, action, policy_class: policy_class, **args
-          #Rails.logger.debug "AUTHORIZATION ----------- True ------ for #{action} on #{record.is_a?(Class) ? record.name : record.class.name}"
+
           true
         rescue NoPolicyError => error
           # By default, Avo allows anything if you don't have a policy present.
@@ -42,15 +41,14 @@ module Avo
           raise error
         rescue => error
           if args[:raise_exception] == false
-            #Rails.logger.debug "AUTHORIZATION ----------- False ------ for #{action} on #{record.is_a?(Class) ? record.name : record.class.name}"
             false
           else
-            #Rails.logger.debug "AUTHORIZATION --- False with exception ------ for #{action} on #{record.is_a?(Class) ? record.name : record.class.name}"
             raise error
           end
         end
 
         def authorize_action(user, record, action, policy_class: nil, **args)
+
           action = Avo.configuration.authorization_methods.stringify_keys[action.to_s] || action
 
           # If no action passed we should raise error if the user wants that.
@@ -67,7 +65,7 @@ module Avo
         end
 
         def apply_policy(user, model, policy_class: nil)
-          return model if skip_authorization || user.nil?
+          return model if skip_authorization
 
           client.apply_policy(user, model, policy_class: policy_class)
         rescue NoPolicyError => error
@@ -122,10 +120,7 @@ module Avo
       end
 
       def authorize_action(action, **args)
-        result = self.class.authorize_action(user, record, action, policy_class: policy_class, **args)
-
-        #Rails.logger.debug "AUTHORIZATION --->>> #{action} on #{record.to_s} result #{result}"
-        result
+        self.class.authorize_action(user, args[:record] || record, action, policy_class: policy_class, **args)
       end
 
       def apply_policy(model)
@@ -137,8 +132,10 @@ module Avo
       end
 
       def has_method?(method, **args)
-        return true
-        # defined_methods(record, **args).include? method.to_sym
+      	#TODO check if needed
+      	return true
+
+        defined_methods(args[:record] || record, **args).include? method.to_sym
       end
     end
   end

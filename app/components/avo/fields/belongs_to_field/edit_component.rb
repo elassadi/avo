@@ -8,7 +8,7 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
   end
 
   def disabled
-    return true if @field.is_readonly?
+    return true if @field.is_readonly? || @field.is_disabled?
 
     # When visiting the record through it's association we keep the field disabled by default
     # We make an exception when the user deliberately instructs Avo to allow detaching in this scenario
@@ -50,7 +50,7 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
   end
 
   def field_html_action
-    @field.get_html(:data, view: @resource.view, element: :input).fetch(:action, nil)
+    @field.get_html(:data, view: view, element: :input).fetch(:action, nil)
   end
 
   private

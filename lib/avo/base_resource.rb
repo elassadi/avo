@@ -186,7 +186,6 @@ module Avo
     end
 
     def get_action_arguments(action_class)
-      binding.pry unless action_class
       action = get_actions.find { |action| action[:class].to_s == action_class.to_s }
 
       action[:arguments]
