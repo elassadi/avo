@@ -1,0 +1,20 @@
+<%= form_with model: @resource.model,
+  scope: @resource.form_scope,
+  url: 'form_url',
+  local: true,
+  html: {
+    novalidate: true
+  },
+  multipart: true do |form| %>
+  <%# regenerate the field %>
+  <turbo-stream action="update" targets="[data-resource-edit-target='courseBelongsToWrapper']">
+    <template>
+  <%= render @field.hydrate(resource: @related_resource, model: @related_resource.model, user: @related_resource.user, view: :edit)
+      .component_for_view(:edit)
+      .new(field: @field, resource: @related_resource, index: 0, form: form)
+    %>
+    </template>
+  </turbo-stream>
+<% end %>
+<%# Remove the modal %>
+<turbo-stream action="update" target="modal_resource"></turbo-stream>

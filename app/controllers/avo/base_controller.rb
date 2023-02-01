@@ -124,7 +124,7 @@ module Avo
       add_breadcrumb t("avo.new").humanize
 
       respond_to do |format|
-        format.html { render params[:modal_resource] ? :new_modal : :new}
+        format.html { render params[:modal_resource] ? :new_modal : :new }
       end
     end
 
@@ -159,6 +159,16 @@ module Avo
       add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
       add_breadcrumb t("avo.new").humanize
       set_actions
+
+      # This is very much hard-coded here.
+      # IMHO We need a better way to hook into this event from other fields.
+      if params[:modal_resource].present? && params[:field_type].present? && params[:field_id].present?
+        if params[:field_type] == "belongs_to"
+          @related_resource = ::Avo::App.get_resource_by_model_name(@resource.record._reflections.find { |name, reflection| reflection.options[:inverse_of] == params[:field_id].to_sym }.second.options[:class_name])
+
+          @field = @related_resource.get_field params[:field_id].to_sym
+        end
+      end
 
       if saved
         create_success_action
@@ -411,9 +421,7 @@ module Avo
       respond_to do |format|
         if params[:modal_resource]
           format.turbo_stream do
-            render turbo_stream: [
-              turbo_stream.update("modal_resource", "")
-            ]
+            render :create
           end
         end
         format.html { redirect_to after_create_path, notice: create_success_message}

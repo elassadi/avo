@@ -53,17 +53,15 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
     @field.get_html(:data, view: view, element: :input).fetch(:action, nil)
   end
 
-
   def modal_create_path
-
     args = {
-      modal_resource: true
+      modal_resource: true,
+      field_id: field.id,
+      field_type: field.type,
     }
 
-    reflection = field.model._reflections[@field.id.to_s]
     helpers.new_resource_path(resource: @field.target_resource, **args)
   end
-
 
   def modal_resource?
     params[:modal_resource].present?
