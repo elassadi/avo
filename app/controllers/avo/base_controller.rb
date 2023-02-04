@@ -412,7 +412,7 @@ module Avo
         if params[:modal_resource]
           format.turbo_stream do
             render turbo_stream: [
-              turbo_stream.update("modal_resource", "")
+              turbo_stream.update("modal_resource", "<button data-action='clipboard#copy'>Copy to Clipboard</button>")
             ]
           end
         end
