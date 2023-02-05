@@ -80,37 +80,49 @@
   </div>
 <% else %>
   <%= field_wrapper **field_wrapper_args do %>
-    <% if @field.searchable %>
-      <%= render Avo::Fields::BelongsToField::AutocompleteComponent.new form: @form,
-        field: @field,
-        model_key: @field.target_resource&.model_key,
-        foreign_key: @field.id_input_foreign_key,
-        resource: @resource,
-        disabled: disabled,
-        classes: classes("w-full"),
-#PATcH-TODO hier fix
-        view: @resource&.view || :edit,
-        style: @field.get_html(:style, view: view, element: :input)
-      %>
-    <% else %>
-      <%= @form.select @field.id_input_foreign_key, @field.options,
-        {
-          include_blank: @field.placeholder,
-          value: @field.value
-        },
-        {
-          class: classes("w-full"),
-          data: @field.get_html(:data, view: view, element: :input),
+    <div class="flex">
+      <% if @field.searchable %>
+        <%= render Avo::Fields::BelongsToField::AutocompleteComponent.new form: @form,
+          field: @field,
+          model_key: @field.target_resource&.model_key,
+          foreign_key: @field.id_input_foreign_key,
+          resource: @resource,
           disabled: disabled,
+          classes: classes("w-full"),
+  #PATcH-TODO hier fix
+          view: @resource&.view || :edit,
           style: @field.get_html(:style, view: view, element: :input)
-        }
-      %>
-      <%
-        # If the select field is disabled, no value will be sent. It's how HTML works.
-        # Thus the extra hidden field to actually send the related id to the server.
-        if disabled %>
-        <%= @form.hidden_field @field.id_input_foreign_key %>
+        %>
+      <% else %>
+        <%= @form.select @field.id_input_foreign_key, @field.options,
+          {
+            include_blank: @field.placeholder,
+            value: @field.value
+          },
+          {
+            class: classes("w-full"),
+            data: @field.get_html(:data, view: view, element: :input),
+            disabled: disabled,
+            style: @field.get_html(:style, view: view, element: :input)
+          }
+        %>
+        <%
+          # If the select field is disabled, no value will be sent. It's how HTML works.
+          # Thus the extra hidden field to actually send the related id to the server.
+          if disabled %>
+          <%= @form.hidden_field @field.id_input_foreign_key %>
+        <% end %>
+        <% if !modal_resource? %>
+            <% if @resource.authorization.authorize_action(:create, raise_exception: false) %>
+              <%= helpers.a_link modal_create_path,
+                style: :primary,
+                color: :primary,
+                data: { "turbo-frame": 'modal_resource' },
+                icon: 'plus' do %>
+              <% end %>
+            <% end %>
+          <% end %>
       <% end %>
-    <% end %>
+    </div>
   <% end %>
 <% end %>

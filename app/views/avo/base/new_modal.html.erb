@@ -1,0 +1,14 @@
+<%= render Avo::TurboFrameWrapperComponent.new("modal_resource") do %>
+  <%= render Avo::ModalResourceComponent.new do |c| %>
+    <%= render Avo::Views::ResourceEditModalComponent.new(resource: @resource, model: @model, view: @view, actions: @actions) %>
+
+    <% c.controls do %>
+      <%= a_button 'data-action': 'click->modal#close', size: :sm, style: :outline, color: :gray do %>
+        <%= t('avo.cancel') %>
+      <% end %>
+      <%= a_button type: :submit, style: :primary, color: :primary, size: :sm, icon: 'save' do %>
+        <%= t('avo.save').capitalize %>
+      <% end %>
+    <% end if false %>
+  <% end %>
+<% end %>

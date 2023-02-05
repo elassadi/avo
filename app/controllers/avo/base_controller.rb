@@ -128,6 +128,10 @@ module Avo
 
       add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
       add_breadcrumb t("avo.new").humanize
+
+      respond_to do |format|
+        format.html { render params[:modal_resource] ? :new_modal : :new}
+      end
     end
 
     def create
@@ -412,6 +416,35 @@ module Avo
 
     def create_success_action
       respond_to do |format|
+        if params[:modal_resource] && false
+          format.turbo_stream do
+            via_child_resource = Avo::App.get_resource(params[:via_child_resource])
+            field_id="#{via_child_resource.name.downcase}_#{@resource.name.downcase}_id"
+            render turbo_stream: [
+              turbo_stream.update("modal_resource", %{
+
+                <script>
+                el = document.querySelectorAll("input[type=text][id=#{field_id}]")[0]
+                if (el) { el.value = "#{@resource.model_title}"}
+                el = document.querySelectorAll("input[type=hidden][id=#{field_id}]")[0]
+                if (el) {  el.value = "#{@resource.model.id}" }
+                el = document.querySelectorAll("select[id=#{field_id}]")[0]
+                if (el) {
+                  let newOption = new Option('#{@resource.model_title}','#{@resource.model.id}', true, true);
+                  el.add(newOption);
+                }
+                </script>
+                }
+              )
+            ]
+          end
+        end
+
+        if params[:modal_resource]
+          format.turbo_stream do
+            render :create
+          end
+        end
         format.html { redirect_to after_create_path, notice: create_success_message}
       end
     end
@@ -419,7 +452,7 @@ module Avo
     def create_fail_action
       respond_to do |format|
         flash.now[:error] = create_fail_message
-        format.html { render :new, status: :unprocessable_entity }
+        format.html { render params[:modal_resource] ? :new_modal : :new , status: :unprocessable_entity }
       end
     end
 
