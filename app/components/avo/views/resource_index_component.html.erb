@@ -22,13 +22,23 @@
 	        <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view %>
 	      <% end %>
 	      <% if can_see_the_create_button? %>
-	        <%= a_link create_path,
-	          icon: 'heroicons/outline/plus',
-	          'data-target': 'create',
-	          style: :primary,
-	          color: :primary do %>
-	          <%= t('avo.create_new_item', item: singular_resource_name.downcase ) %>
-	        <% end %>
+					<% if can_see_modal_create_button? %>
+						<%= a_link modal_create_path,
+							data: { "turbo-frame": 'modal_resource' },
+							icon: 'heroicons/outline/plus',
+							style: :primary,
+							color: :primary do %>
+							<%= t('avo.create_new_item', item: singular_resource_name.downcase ) %>
+						<% end %>
+					<% else %>
+						<%= a_link create_path,
+							icon: 'heroicons/outline/plus',
+							'data-target': 'create',
+							style: :primary,
+							color: :primary do %>
+							<%= t('avo.create_new_item', item: singular_resource_name.downcase ) %>
+						<% end %>
+					<% end %>
 	      <% end %>
 	    <% end %>
 	    <% c.body do %>

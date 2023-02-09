@@ -113,7 +113,7 @@
           <%= @form.hidden_field @field.id_input_foreign_key %>
         <% end %>
         <% if !modal_resource? %>
-            <% if @resource.authorization.authorize_action(:create, raise_exception: false) %>
+            <% if !disabled && @field.in_line_method_allowed?(:create) && @resource.authorization.authorize_action(:create, raise_exception: false) %>
               <%= helpers.a_link modal_create_path,
                 style: :primary,
                 color: :primary,

@@ -68,14 +68,16 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     @reflection.present? && klass.is_a?(::ActiveRecord::Reflection::HasManyReflection) && !has_reflection_and_is_read_only && authorize_association_for(:attach)
   end
 
-  def create_path
-    args = {}
+
+  #PATCH-TODO
+  def create_path(args: {})
+    #args = {}
 
     if @reflection.present?
-      args = {
+      args.merge!({
         via_relation_class: reflection_model_class,
         via_resource_id: @parent_model.id
-      }
+      })
 
       if @reflection.is_a? ActiveRecord::Reflection::ThroughReflection
         args[:via_relation] = params[:resource_name]
@@ -148,4 +150,23 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
       id: @parent_model.id
     }
   end
+
+  #PATCH-TODO
+  def modal_create_path
+    args = {
+      modal_resource: true,
+      via_child_resource: @resource.class.to_s
+    }
+    create_path(args:)
+  end
+
+
+  def can_see_modal_create_button?
+    return unless can_see_the_create_button? && field.present?
+
+    field.modal_create.respond_to?(:call) ? field.modal_create.call(resource: @resource) : field.modal_create
+
+  end
+
+
 end

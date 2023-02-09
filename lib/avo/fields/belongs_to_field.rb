@@ -65,6 +65,7 @@ module Avo
       attr_reader :allow_via_detaching
       attr_reader :attach_scope
       attr_reader :polymorphic_help
+      attr_reader :in_line
 
       def initialize(id, **args, &block)
         args[:placeholder] ||= I18n.t("avo.choose_an_option")
@@ -79,6 +80,7 @@ module Avo
         @attach_scope = args[:attach_scope]
         @polymorphic_help = args[:polymorphic_help]
         @target = args[:target]
+        @in_line = args[:in_line]
       end
 
       def searchable
@@ -257,6 +259,19 @@ module Avo
         return polymorphic_as.to_s.humanize if polymorphic_as.present? && view == :index
 
         super
+      end
+
+      def in_line_method_allowed?(method)
+
+        return false if @in_line.blank?
+
+        methods = if @in_line.present? && @in_line.respond_to?(:call)
+          @in_line.call resource: @resource, model: @modal
+        else
+          Array(@in_line).flatten
+        end
+
+        methods.include?(method)
       end
 
       private

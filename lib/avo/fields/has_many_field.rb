@@ -1,7 +1,11 @@
 module Avo
   module Fields
     class HasManyField < HasBaseField
+      attr_reader :modal_create
+
       def initialize(id, **args, &block)
+# PATCH-TODO
+        @modal_create = args[:modal_create]
         args[:updatable] = false
 
         hide_on :all
