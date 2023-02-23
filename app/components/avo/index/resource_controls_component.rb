@@ -47,14 +47,15 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   def edit_path
     # Add the `view` param to let Avo know where to redirect back when the user clicks the `Cancel` button.
     args = {via_view: "index"}
-
+    #PATCH-TODO
     if @parent_model.present?
       args = {
         via_resource_class: parent_resource.class.to_s,
-        via_resource_id: @parent_model.id
+        via_resource_id: @parent_model.id,
+        modal_resource: true,
+        via_child_resource: @resource.class.to_s
       }
     end
-
     helpers.edit_resource_path(model: @resource.model, resource: parent_or_child_resource, **args)
   end
 

@@ -8,7 +8,7 @@
   <template>
     <script>
       el = document.querySelectorAll("input[type=text][id=<%= field_id %>]")[0]
-      if (el) { el.value = "<%= @resource.model_title %>%"}
+      if (el) { el.value = "<%= @resource.model_title %>"}
       el = document.querySelectorAll("input[type=hidden][id=<%= field_id %>]")[0]
       if (el) {  el.value = "<%= @resource.model.id %>" }
       el = document.querySelectorAll("select[id=<%= field_id %>]")[0]

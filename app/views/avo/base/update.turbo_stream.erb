@@ -1,0 +1,11 @@
+<%
+  turbo_frame_id="has_many_field_show_#{@resource.class.name.underscore.gsub("_resource", "").pluralize}"
+%>
+<turbo-stream action="update" target="modal_resource">
+  <template>
+    <script>
+      el =  document.getElementById("<%= turbo_frame_id %>")
+      if (el) { el.reload() }
+    </script>
+  </template>
+</turbo-stream>

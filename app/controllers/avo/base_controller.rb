@@ -175,6 +175,9 @@ module Avo
 
     def edit
       set_actions
+      respond_to do |format|
+        format.html { render params[:modal_resource] ? :new_modal : :edit}
+      end
     end
 
     def update
@@ -256,7 +259,8 @@ module Avo
     end
 
     def permitted_params
-      @resource.get_field_definitions.select(&:updatable).map(&:to_permitted_param).concat extra_params
+    # PATCH-TODO
+      @resource.get_field_definitions.select{|field| !field.is_readonly? }.map(&:to_permitted_param).concat extra_params
     end
 
     def extra_params
@@ -416,30 +420,6 @@ module Avo
 
     def create_success_action
       respond_to do |format|
-        if params[:modal_resource] && false
-          format.turbo_stream do
-            via_child_resource = Avo::App.get_resource(params[:via_child_resource])
-            field_id="#{via_child_resource.name.downcase}_#{@resource.name.downcase}_id"
-            render turbo_stream: [
-              turbo_stream.update("modal_resource", %{
-
-                <script>
-                el = document.querySelectorAll("input[type=text][id=#{field_id}]")[0]
-                if (el) { el.value = "#{@resource.model_title}"}
-                el = document.querySelectorAll("input[type=hidden][id=#{field_id}]")[0]
-                if (el) {  el.value = "#{@resource.model.id}" }
-                el = document.querySelectorAll("select[id=#{field_id}]")[0]
-                if (el) {
-                  let newOption = new Option('#{@resource.model_title}','#{@resource.model.id}', true, true);
-                  el.add(newOption);
-                }
-                </script>
-                }
-              )
-            ]
-          end
-        end
-
         if params[:modal_resource]
           format.turbo_stream do
             render :create
@@ -482,6 +462,11 @@ module Avo
 
     def update_success_action
       respond_to do |format|
+        if params[:modal_resource]
+          format.turbo_stream do
+            render :update
+          end
+        end
         format.html { redirect_to after_update_path, notice: update_success_message }
       end
     end
