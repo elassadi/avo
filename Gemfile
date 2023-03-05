@@ -80,8 +80,9 @@ group :development do
   gem "brakeman"
 end
 
+gem "awesome_print"
+
 group :development, :test do
-  gem "awesome_print"
   gem "faker", require: false
   gem "i18n-tasks", "~> 1.0.12"
 end
@@ -162,3 +163,5 @@ gem "sprockets-rails"
 # Avo file filed requires this gem
 # Use Active Storage variant
 gem "image_processing", "~> 1.12"
+
+gem "prefixed_ids"

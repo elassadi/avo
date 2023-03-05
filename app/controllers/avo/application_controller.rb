@@ -18,8 +18,8 @@ module Avo
     before_action :init_app
     before_action :check_avo_license
     before_action :set_resource_name
-    before_action :set_authorization
     before_action :_authenticate!
+    before_action :set_authorization
     before_action :set_container_classes
     before_action :add_initial_breadcrumbs
     before_action :set_view
@@ -128,11 +128,7 @@ module Avo
     end
 
     def set_model
-      @model = model_find_scope.find record_id
-    end
-
-    def record_id
-      params.permit(:id).dig(:id)
+      @model = @resource.find_record(params[:id], query: model_find_scope, params: params)
     end
 
     def model_find_scope
@@ -145,11 +141,10 @@ module Avo
 
     def set_related_model
       association_name = BaseResource.valid_association_name(@model, params[:related_name])
-
       @related_model = if @field.is_a? Avo::Fields::HasOneField
         @model.send association_name
       else
-        eager_load_files(@related_resource, @model.send(association_name)).find params[:related_id]
+        @related_resource.find_record params[:related_id], query: eager_load_files(@related_resource, @model.send(association_name)), params: params
       end
     end
 

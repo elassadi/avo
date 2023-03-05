@@ -3,6 +3,10 @@
 
 Fixes # (issue)
 
+<!--
+  By submitting the Contribution, you acknowledge that you have read the Contributor License Agreement at https://avohq.io/cla and agree to be bound by its terms.
+-->
+
 # Checklist:
 <!--
   Please go through the steps and complete them if they make sense (add tests if the change requires it, add to the docs, etc.)

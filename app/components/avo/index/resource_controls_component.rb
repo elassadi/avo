@@ -31,13 +31,19 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     @resource.authorization.authorize_action(:show, raise_exception: false)
   end
 
+  def can_reorder?
+    return authorize_association_for(:reorder) if @reflection.present?
+
+    @resource.authorization.authorize_action(:reorder, raise_exception: false)
+  end
+
   def show_path
     args = {}
 
     if @parent_model.present?
       args = {
         via_resource_class: parent_resource.class.to_s,
-        via_resource_id: @parent_model.id
+        via_resource_id: @parent_model.to_param
       }
     end
 
@@ -51,8 +57,8 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     if @parent_model.present?
       args = {
         via_resource_class: parent_resource.class.to_s,
-        via_resource_id: @parent_model.id,
         modal_resource: true,
+        via_resource_id: @parent_model.to_param,
         via_child_resource: @resource.class.to_s
       }
     end

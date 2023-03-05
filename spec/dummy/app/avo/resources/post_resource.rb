@@ -6,6 +6,9 @@ class PostResource < Avo::BaseResource
   self.search_query_help = "- search by id, name or body"
   self.includes = [:user]
   self.default_view_type = :grid
+  self.find_record_method = ->(model_class:, id:, params:) {
+    id.to_i == 0 ? model_class.find_by_slug(id) : model_class.find(id)
+  }
 
   # self.show_controls = -> do
   #   detach_button
@@ -36,9 +39,7 @@ class PostResource < Avo::BaseResource
   field :cover_photo, as: :external_image, name: "Cover photo", required: true, hide_on: :all, link_to_resource: true, as_avatar: :rounded, format_using: ->(value) { value.present? ? value&.url : nil }
   field :audio, as: :file, is_audio: true, accept: "audio/*"
   field :excerpt, as: :text, hide_on: :all, as_description: true do |model|
-    ActionView::Base.full_sanitizer.sanitize(model.body).truncate 130
-  rescue
-    ""
+    extract_excerpt model.body
   end
 
   field :is_featured, as: :boolean, visible: ->(resource:) { context[:user].is_admin? }
@@ -47,15 +48,14 @@ class PostResource < Avo::BaseResource
   end
   field :user, as: :belongs_to, placeholder: "—"
   field :status, as: :select, enum: ::Post.statuses, display_value: false
+  field :slug, as: :text
   field :comments, as: :has_many, use_resource: PhotoCommentResource
 
   grid do
     cover :cover_photo, as: :file, is_image: true, link_to_resource: true
     title :name, as: :text, required: true, link_to_resource: true
     body :excerpt, as: :text do |model|
-      ActionView::Base.full_sanitizer.sanitize(model.body).truncate 130
-    rescue
-      ""
+      extract_excerpt model.body
     end
   end
 

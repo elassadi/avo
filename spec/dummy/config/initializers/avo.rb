@@ -59,6 +59,12 @@ Avo.configure do |config|
     # placeholder: "/avo-assets/placeholder.svg",
   }
 
+  # Uncomment to test out manual resource loading.
+  # config.resources = [
+  #   "UserResource",
+  #   "FishResource",
+  # ]
+
   ## == Menus ==
   config.main_menu = -> do
     section I18n.t("avo.dashboards"), icon: "dummy-adjustments.svg" do
@@ -131,4 +137,9 @@ Avo.configure do |config|
   config.profile_menu = -> do
     link "Profile", path: "/profile", icon: "user-circle"
   end
+end
+
+Rails.configuration.to_prepare do
+  Avo::Fields::BaseField.include FieldExtensions
+  Avo::ApplicationController.include ApplicationControllerExtensions
 end

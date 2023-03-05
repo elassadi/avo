@@ -48,7 +48,6 @@ module Avo
         end
 
         def authorize_action(user, record, action, policy_class: nil, **args)
-
           action = Avo.configuration.authorization_methods.stringify_keys[action.to_s] || action
 
           # If no action passed we should raise error if the user wants that.
