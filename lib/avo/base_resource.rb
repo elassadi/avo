@@ -354,11 +354,12 @@ module Avo
       Digest::MD5.hexdigest(content_to_be_hashed)
     end
 
+    #PATCH-TODO
     def cache_hash(parent_model)
       if parent_model.present?
-        [model, file_hash, parent_model]
+        [model, file_hash, parent_model, current_user&.id]
       else
-        [model, file_hash]
+        [model, file_hash, current_user&.id]
       end
     end
 
