@@ -444,7 +444,9 @@ module Avo
     end
 
     def create_fail_message
-      t "avo.you_missed_something_check_form"
+      return t "avo.you_missed_something_check_form" unless @errors.present?
+
+      @errors.flatten.join(" ")
     end
 
     def after_create_path
