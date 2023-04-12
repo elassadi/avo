@@ -57,6 +57,8 @@ module Avo
     # - is_disabled?
 
     class BelongsToField < BaseField
+      include Avo::Fields::Concerns::UseResource
+
       attr_accessor :target
 
       attr_reader :polymorphic_as
@@ -80,7 +82,9 @@ module Avo
         @attach_scope = args[:attach_scope]
         @polymorphic_help = args[:polymorphic_help]
         @target = args[:target]
+# PATCH:TODO
         @in_line = args[:in_line]
+        @use_resource = args[:use_resource] || nil
       end
 
       def searchable
@@ -228,6 +232,8 @@ module Avo
       end
 
       def target_resource
+        return use_resource if use_resource.present?
+
         if is_polymorphic?
           if value.present?
             return App.get_resource_by_model_name(value.class)

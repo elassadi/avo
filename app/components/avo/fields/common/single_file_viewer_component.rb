@@ -2,8 +2,11 @@
 
 class Avo::Fields::Common::SingleFileViewerComponent < ViewComponent::Base
   include Avo::ApplicationHelper
+  include Avo::Fields::Concerns::FileAuthorization
 
-  def initialize(file: nil, field:, resource:)
+  attr_reader :field
+
+  def initialize(field:, resource:, file: nil)
     @file = file
     @field = field
     @resource = resource
@@ -14,29 +17,29 @@ class Avo::Fields::Common::SingleFileViewerComponent < ViewComponent::Base
   end
 
   def id
-    @field.id
+    field.id
   end
 
   def file
-    @file || @field.value.attachment
+    @file || field.value.attachment
   rescue
     nil
   end
 
   def is_image?
-    file.image? || @field.is_image
+    file.image? || field.is_image
   rescue
     false
   end
 
   def is_audio?
-    file.audio? || @field.is_audio
+    file.audio? || field.is_audio
   rescue
     false
   end
 
   def is_video?
-    file.video? || @field.is_video
+    file.video? || field.is_video
   rescue
     false
   end
@@ -45,7 +48,7 @@ class Avo::Fields::Common::SingleFileViewerComponent < ViewComponent::Base
     record_persisted?
   end
 
-   # If model is not persistent blob is automatically destroyed otherwise it can be "lost" on storage
+  # If model is not persistent blob is automatically destroyed otherwise it can be "lost" on storage
   def record_persisted?
     return true if @resource.model.persisted?
 
