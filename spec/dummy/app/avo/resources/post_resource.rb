@@ -7,7 +7,7 @@ class PostResource < Avo::BaseResource
   self.includes = [:user]
   self.default_view_type = :grid
   self.find_record_method = ->(model_class:, id:, params:) {
-    id.to_i == 0 ? model_class.find_by_slug(id) : model_class.find(id)
+    !id.is_a?(Array) && id.to_i == 0 ? model_class.find_by_slug(id) : model_class.find(id)
   }
 
   # self.show_controls = -> do
@@ -35,7 +35,7 @@ class PostResource < Avo::BaseResource
     suggestions: -> { Post.tags_suggestions },
     enforce_suggestions: true,
     help: "The only allowed values here are `one`, `two`, and `three`"
-  field :cover_photo, as: :file, is_image: true, as_avatar: :rounded, full_width: true, hide_on: [], accept: "image/*"
+  field :cover_photo, as: :file, is_image: true, as_avatar: :rounded, full_width: true, hide_on: [], accept: "image/*", display_filename: false
   field :cover_photo, as: :external_image, name: "Cover photo", required: true, hide_on: :all, link_to_resource: true, as_avatar: :rounded, format_using: ->(value) { value.present? ? value&.url : nil }
   field :audio, as: :file, is_audio: true, accept: "audio/*"
   field :excerpt, as: :text, hide_on: :all, as_description: true do |model|
