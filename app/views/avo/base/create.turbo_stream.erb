@@ -10,7 +10,7 @@
     <script>
 
       let event = new CustomEvent("resourceCreated", {resourceName: "<%=resource_model_name%>"}); // (2)
-      elem.dispatchEvent(event);
+      document.dispatchEvent(event);
 
       el = document.querySelectorAll("input[type=text][id=<%= field_id %>]")[0]
       if (el) {
