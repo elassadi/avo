@@ -1,9 +1,19 @@
 <%
   turbo_frame_id="has_many_field_show_#{@resource.class.name.underscore.gsub("_resource", "").pluralize}"
+  resource_model_name = @resource.class.name.underscore.gsub("_resource", "")
 %>
 <turbo-stream action="update" target="modal_resource">
   <template>
     <script>
+
+      let event = new CustomEvent("resourceUpdated", {
+          detail: {
+            resourceModelName: "<%=resource_model_name%>",
+            resourceModelId: "<%=@resource.model.id%>"
+          }
+        }
+      );
+      document.dispatchEvent(event);
       el =  document.getElementById("<%= turbo_frame_id %>")
       if (el) { el.reload() }
     </script>

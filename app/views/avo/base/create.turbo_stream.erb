@@ -7,6 +7,16 @@
 <turbo-stream action="update" target="modal_resource">
   <template>
     <script>
+
+      let event = new CustomEvent("resourceCreated", {
+          detail: {
+            resourceModelName: "<%=resource_model_name%>",
+            resourceModelId: "<%=@resource.model.id%>"
+          }
+        }
+      );
+      document.dispatchEvent(event);
+
       el = document.querySelectorAll("input[type=text][id=<%= field_id %>]")[0]
       if (el) {
         el.setAttribute("value", "<%= @resource.model_title %>")
