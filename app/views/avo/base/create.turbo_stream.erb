@@ -2,12 +2,16 @@
   via_child_resource = Avo::App.get_resource(params[:via_child_resource])
   child_field_id = via_child_resource.class.name.underscore.gsub("_resource", "")
   field_id="#{child_field_id}_#{@resource.class.name.underscore.gsub("_resource", "")}_id"
-  turbo_frame_id="has_many_field_show_#{@resource.class.name.underscore.gsub("_resource", "").pluralize}"
+  resource_model_name = @resource.class.name.underscore.gsub("_resource", "")
+  turbo_frame_id="has_many_field_show_#{resource_model_name.pluralize}"
 %>
 <turbo-stream action="update" target="modal_resource">
   <template>
     <script>
-    alert("create -------------------------------------- ")
+
+      let event = new CustomEvent("resourceCreated", {resourceName: "<%=resource_model_name%>"}); // (2)
+      elem.dispatchEvent(event);
+
       el = document.querySelectorAll("input[type=text][id=<%= field_id %>]")[0]
       if (el) {
         el.setAttribute("value", "<%= @resource.model_title %>")
