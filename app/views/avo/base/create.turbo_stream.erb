@@ -9,7 +9,7 @@
   <template>
     <script>
 
-      let event = new CustomEvent("resourceCreated", {resourceName: "<%=resource_model_name%>"}); // (2)
+      let event = new CustomEvent("resourceCreated", detail: {resourceName: "<%=resource_model_name%>"}); // (2)
       document.dispatchEvent(event);
 
       el = document.querySelectorAll("input[type=text][id=<%= field_id %>]")[0]
