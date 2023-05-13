@@ -7,6 +7,7 @@
 <turbo-stream action="update" target="modal_resource">
   <template>
     <script>
+    alert("create -------------------------------------- ")
       el = document.querySelectorAll("input[type=text][id=<%= field_id %>]")[0]
       if (el) {
         el.setAttribute("value", "<%= @resource.model_title %>")
