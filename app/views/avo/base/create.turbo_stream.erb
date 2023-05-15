@@ -9,7 +9,7 @@
   <template>
     <script>
 
-      let event = new CustomEvent("resourceCreated", {
+      event = new CustomEvent("resourceCreated", {
           detail: {
             resourceModelName: "<%=resource_model_name%>",
             resourceModelId: "<%=@resource.model.id%>"

@@ -6,7 +6,7 @@
   <template>
     <script>
 
-      let event = new CustomEvent("resourceUpdated", {
+      event = new CustomEvent("resourceUpdated", {
           detail: {
             resourceModelName: "<%=resource_model_name%>",
             resourceModelId: "<%=@resource.model.id%>"
