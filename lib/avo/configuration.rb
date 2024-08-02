@@ -27,6 +27,7 @@ module Avo
     attr_accessor :initial_breadcrumbs
     attr_accessor :home_path
     attr_accessor :search_debounce
+    attr_accessor :search_results_count
     attr_accessor :view_component_path
     attr_accessor :display_license_request_timeout_error
     attr_accessor :current_user_resource_name
@@ -80,6 +81,7 @@ module Avo
       @hide_layout_when_printing = false
       @home_path = nil
       @search_debounce = 300
+      @search_results_count = 8
       @view_component_path = "app/components"
       @display_license_request_timeout_error = true
       @current_user_resource_name = "user"

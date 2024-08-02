@@ -54,7 +54,7 @@ module Avo
       results_count = query.reselect(:id).count
 
       # Get the results
-      query = query.limit(8)
+      query = query.limit(Avo.configuration.search_results_count)
 
       query = apply_scope(query) if should_apply_any_scope?
 
