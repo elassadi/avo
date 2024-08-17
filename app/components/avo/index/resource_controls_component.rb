@@ -57,7 +57,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     if @parent_model.present?
       args = {
         via_resource_class: parent_resource.class.to_s,
-        modal_resource: true,
+        modal_resource: params[:modal_resource] == "modal_resource" ? "sub_modal_resource" : "modal_resource",
         via_resource_id: @parent_model.to_param,
         via_child_resource: @resource.class.to_s
       }

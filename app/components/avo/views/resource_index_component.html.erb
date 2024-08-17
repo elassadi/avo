@@ -24,7 +24,7 @@
 	      <% if can_see_the_create_button? %>
 					<% if can_see_modal_create_button? %>
 						<%= a_link modal_create_path,
-							data: { "turbo-frame": 'modal_resource' },
+							data: { "turbo-frame": params[:modal_resource] == "modal_resource" ? "sub_modal_resource" : "modal_resource" },
 							icon: 'heroicons/outline/plus',
 							style: :primary,
 							color: :primary do %>

@@ -24,7 +24,7 @@
       class: 'flex items-center',
       title: t('avo.edit_item', item: singular_resource_name).capitalize,
       data: {
-        "turbo-frame": 'modal_resource',
+        "turbo-frame": params[:modal_resource] == "modal_resource" ? "sub_modal_resource" : "modal_resource",
         target: 'control:edit',
         control: :edit,
         'resource-id': @resource.model.id,

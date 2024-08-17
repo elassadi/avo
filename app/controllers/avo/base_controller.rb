@@ -130,9 +130,18 @@ module Avo
       add_breadcrumb t("avo.new").humanize
 
       respond_to do |format|
-        format.html { render params[:modal_resource] ? :new_modal : :new}
+        format.html { render new_modal_resource_view}
       end
     end
+
+    def new_modal_resource_view
+      return :new unless params[:modal_resource]
+
+      params[:modal_resource] == "new_sub_modal" ? :new_sub_modal : :new_modal
+    end
+
+
+
 
     def create
       # model gets instantiated and filled in the fill_model method
@@ -179,9 +188,16 @@ module Avo
     def edit
       set_actions
       respond_to do |format|
-        format.html { render params[:modal_resource] ? :new_modal : :edit}
+        format.html { render edit_modal_resource_view}
       end
     end
+
+    def edit_modal_resource_view
+      return :edit unless params[:modal_resource]
+
+      params[:modal_resource] == "new_sub_modal" ? :new_sub_modal : :new_modal
+    end
+
 
     def update
       # model gets instantiated and filled in the fill_model method
@@ -435,7 +451,7 @@ module Avo
     def create_fail_action
       respond_to do |format|
         flash.now[:error] = create_fail_message
-        format.html { render params[:modal_resource] ? :new_modal : :new , status: :unprocessable_entity }
+        format.html { render new_modal_resource_view , status: :unprocessable_entity }
       end
     end
 

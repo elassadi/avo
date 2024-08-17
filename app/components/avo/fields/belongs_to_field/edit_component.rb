@@ -56,7 +56,7 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
 #PATCH-TODO
   def modal_create_path
     args = {
-      modal_resource: true,
+      modal_resource: params[:modal_resource] == "modal_resource" ? "sub_modal_resource" : "modal_resource",
       via_child_resource: @resource.class.to_s
     }
     reflection = field.model._reflections[@field.id.to_s]
