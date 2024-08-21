@@ -54,10 +54,21 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     # Add the `view` param to let Avo know where to redirect back when the user clicks the `Cancel` button.
     args = {via_view: "index"}
     #PATCH-TODO
+
+    modal_resource = if field && field.modal_create.present?
+      enabled = field.modal_create.respond_to?(:call) ? field.modal_create.call(resource: @resource) : field.modal_create
+
+      if enabled
+        params[:modal_resource] == "modal_resource" ? "sub_modal_resource" : "modal_resource"
+      else
+        nil
+      end
+    end
+
     if @parent_model.present?
       args = {
         via_resource_class: parent_resource.class.to_s,
-        modal_resource: params[:modal_resource] == "modal_resource" ? "sub_modal_resource" : "modal_resource",
+        modal_resource: modal_resource,
         via_resource_id: @parent_model.to_param,
         via_child_resource: @resource.class.to_s
       }
