@@ -256,7 +256,7 @@ module Avo
       end
 
       def name
-        return polymorphic_as.to_s.humanize if polymorphic_as.present? && view == :index
+        #return polymorphic_as.to_s.humanize if polymorphic_as.present? && view == :index
 
         super
       end
