@@ -2,10 +2,21 @@ import { Controller } from '@hotwired/stimulus'
 import camelCase from 'lodash/camelCase'
 
 export default class extends Controller {
-  static targets = []
+  static targets = [
+    'inLineSourceInput'
+  ]
 
   static values = {
     view: String,
+  }
+
+
+  connect() {
+    let that = this;
+    this.inLineSourceInputTargets.forEach((target) => {
+      that.onInlineInputChange({ target });
+    });
+
   }
 
   debugOnInput(e) {
@@ -34,6 +45,37 @@ export default class extends Controller {
 
     if (disableTargets && disableTargets.length > 0) {
       disableTargets.forEach(this.disableAvoTarget.bind(this))
+    }
+  }
+
+  onInlineInputChange(e) {
+    let element = e.target;
+    let edit_button_id = element.dataset.inLineSourceTargetFieldId;
+    let edit_button = document.getElementById(edit_button_id);
+
+    if (edit_button) {
+      let id;
+
+
+      // Handle select input
+      if (element.tagName.toLowerCase() === 'select') {
+        let selectedOption = element.options[element.selectedIndex];
+        id = selectedOption && selectedOption.value;
+      }
+
+      // Handle text input
+      if (element.tagName.toLowerCase() === 'input' && element.type === 'text') {
+        let hidden_element = document.querySelectorAll(`input[type=hidden][id=${element.id}]`)[0]        
+        id = hidden_element.value;
+      }
+      // Update edit button href or hide it
+      if (id && !isNaN(id)) {
+        edit_button.classList.remove('hidden');
+        edit_button.href = edit_button.href.replace(/\/\d+\/edit/, `/${id}/edit`);
+      } else {
+        edit_button.href = edit_button.href.replace(/\/\d+\/edit/, `/0/edit`);
+        edit_button.classList.add('hidden');
+      }
     }
   }
 

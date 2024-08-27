@@ -84,6 +84,7 @@ en:
     reset_filters: Reset filters
     resource_created: Record created
     resource_destroyed: Record destroyed
+    resource_can_not_be_destroyed: Record can not be destroyed
     resource_translations:
       team_members:
         one: team member

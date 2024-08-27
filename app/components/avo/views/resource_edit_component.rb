@@ -35,7 +35,8 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   end
 
   def can_see_the_destroy_button?
-    return super if is_edit? && Avo.configuration.resource_default_view == :edit
+
+    return super if is_edit? && (Avo.configuration.resource_default_view == :edit || params[:modal_resource])
 
     false
   end

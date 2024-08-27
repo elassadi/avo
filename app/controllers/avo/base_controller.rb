@@ -251,18 +251,20 @@ module Avo
     end
 
     def perform_action_and_record_errors(&block)
+      exception_message = nil
+      succeeded = false
+
       begin
         succeeded = block.call
       rescue => exception
-        # In case there's an error somewhere else than the model
-        # Example: When you save a license that should create a user for it and creating that user throws and error.
-        # Example: When you Try to delete a record and has a foreign key constraint.
         exception_message = exception.message
       end
 
       # Add the errors from the model
-      @errors = @model.errors.full_messages.reject { |error| exception_message.include? error }.unshift exception_message
+      @errors = @model.errors.full_messages.reject { |error| exception_message&.include?(error) }
 
+      # Only add exception message if it's not nil
+      @errors.unshift(exception_message) if exception_message
       succeeded
     end
 
@@ -520,12 +522,22 @@ module Avo
 
     def destroy_success_action
       respond_to do |format|
+        if params[:modal_destroy]
+          format.turbo_stream do
+            render :destroy_success
+          end
+        end
         format.html { redirect_to after_destroy_path, notice: destroy_success_message }
       end
     end
 
     def destroy_fail_action
       respond_to do |format|
+        if params[:modal_destroy]
+          format.turbo_stream do
+            render :destroy_fail, locals: { error: destroy_fail_message }
+          end
+        end
         format.html { redirect_back fallback_location: params[:referrer] || resources_path(resource: @resource, turbo_frame: params[:turbo_frame], view_type: params[:view_type]), error: destroy_fail_message }
       end
     end
