@@ -53,6 +53,16 @@ class Avo::ResourceComponent < Avo::BaseComponent
     end
   end
 
+  def modal_destroy_path
+    if params[:via_resource_class].present?
+      helpers.resource_path(model: @resource.model, resource: @resource, referrer: back_path,
+        via_child_resource: params[:via_child_resource], modal_destroy: true)
+    else
+      helpers.resource_path(model: @resource.model, resource: @resource,
+        via_child_resource: params[:via_child_resource], modal_destroy: true)
+    end
+  end
+
   # Ex: A Post has many Comments
   def authorize_association_for(policy_method)
     policy_result = true

@@ -63,6 +63,19 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
     helpers.new_resource_path(resource: @field.target_resource, **args)
   end
 
+  def modal_edit_path
+    args = {
+      modal_resource: params[:modal_resource] == "modal_resource" ? "sub_modal_resource" : "modal_resource",
+      via_child_resource: @resource.class.to_s
+    }
+    reflection = field.model._reflections[@field.id.to_s]
+
+    #helpers.edit_resource_path(model:@field.target_resource.model_class.last, resource: @field.target_resource, **args)
+    # helpers.resource_path(model: @field.target_resource.model_class.new(id: 9), resource: @field.target_resource)
+    helpers.edit_resource_path(model: field.target_resource.model_class.last, resource: @field.target_resource, **args)
+  end
+
+
 
   def modal_resource?
     params[:modal_resource].present?

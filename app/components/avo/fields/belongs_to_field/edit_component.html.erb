@@ -81,6 +81,7 @@
 <% else %>
   <%= field_wrapper **field_wrapper_args do %>
     <div class="flex">
+
       <% if @field.searchable %>
         <%= render Avo::Fields::BelongsToField::AutocompleteComponent.new form: @form,
           field: @field,
@@ -94,6 +95,23 @@
           style: @field.get_html(:style, view: view, element: :input)
         %>
       <% else %>
+
+
+      <%
+        data = @field.get_html(:data, view: view, element: :input)
+
+        edit_button_id = "edit_button_#{SecureRandom.hex(4)}"
+
+        if !disabled && @field.in_line_method_allowed?(:create)
+          data.merge!(
+            {
+              "action": "#{data["action"]} resource-edit#onInlineInputChange",
+              "resource-edit-target": "inLineSourceInput",
+              "in-line-source-target-field-id": edit_button_id
+            }
+          )
+        end
+        %>
         <%= @form.select @field.id_input_foreign_key, @field.options,
           {
             include_blank: @field.placeholder,
@@ -101,7 +119,7 @@
           },
           {
             class: classes("w-full"),
-            data: @field.get_html(:data, view: view, element: :input),
+            data: data,
             disabled: disabled,
             style: @field.get_html(:style, view: view, element: :input)
           }
@@ -115,11 +133,23 @@
       <% end %>
       <% if true || !modal_resource? %>
         <% if !disabled && @field.in_line_method_allowed?(:create) && @resource.authorization.authorize_action(:create, raise_exception: false) %>
+
           <%= helpers.a_link modal_create_path,
             style: :primary,
+            class: "ml-1",
             color: :primary,
             data: { "turbo-frame": params[:modal_resource] == "modal_resource" ? "sub_modal_resource" : "modal_resource" },
             icon: 'plus' do %>
+          <% end %>
+          <%= helpers.a_link modal_edit_path,
+            style: :primary,
+            class: "ml-1",
+            color: :primary,
+            id: edit_button_id,
+            data: {
+              "turbo-frame": params[:modal_resource] == "modal_resource" ? "sub_modal_resource" : "modal_resource"
+            },
+            icon: 'edit' do %>
           <% end %>
         <% end %>
       <% end %>

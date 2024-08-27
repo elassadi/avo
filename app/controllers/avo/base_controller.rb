@@ -214,7 +214,7 @@ module Avo
     end
 
     def destroy
-      if destroy_model
+      if true || destroy_model
         destroy_success_action
       else
         destroy_fail_action
@@ -520,6 +520,11 @@ module Avo
 
     def destroy_success_action
       respond_to do |format|
+        if params[:modal_destroy]
+          format.turbo_stream do
+            render :destroy_success
+          end
+        end
         format.html { redirect_to after_destroy_path, notice: destroy_success_message }
       end
     end

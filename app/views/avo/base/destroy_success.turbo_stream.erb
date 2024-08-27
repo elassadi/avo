@@ -1,0 +1,46 @@
+<%
+
+
+  via_child_resource = Avo::App.get_resource(params[:via_child_resource])
+  child_field_id = via_child_resource.class.name.underscore.gsub("_resource", "")
+  field_id="#{child_field_id}_#{@resource.class.name.underscore.gsub("_resource", "")}_id"
+
+  target = params[:modal_resource] == "sub_modal_resource" ? "sub_modal_resource" : "modal_resource"
+
+%>
+<turbo-stream action="update" target="<%= target %>">
+  <template>
+    <script>
+
+      //searchable belongs_to field
+       el = document.querySelectorAll("input[type=text][id=<%= field_id %>]")[0]
+
+      if (el) {
+        el.setAttribute("value", "")
+         el.dispatchEvent(new Event('change'));
+      }
+      el = document.querySelectorAll("input[type=hidden][id=<%= field_id %>]")[0]
+      if (el) {
+        el.setAttribute("value", "")
+         el.dispatchEvent(new Event('change'));
+      }
+
+      el = document.querySelectorAll("select[id=<%= field_id %>]")[0]
+      if (el) {
+        selectedOption = el.options[el.selectedIndex];
+        el.removeChild(selectedOption);
+        if (el.options.length > 0) {
+          el.selectedIndex = 0;
+        }
+         el.dispatchEvent(new Event('change'));
+      }
+    </script>
+  </template>
+</turbo-stream>
+
+
+<turbo-stream action="append" target="alerts">
+  <template>
+      <%= render Avo::AlertComponent.new :success, t("avo.resource_destroyed") %>
+  </template>
+</turbo-stream>
