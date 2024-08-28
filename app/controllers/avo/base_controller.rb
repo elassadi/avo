@@ -206,6 +206,8 @@ module Avo
       @resource = @resource.hydrate(model: @model, view: :edit, user: _current_user)
       set_actions
 
+
+
       if saved
         update_success_action
       else
@@ -497,8 +499,17 @@ module Avo
     def update_fail_action
       respond_to do |format|
         flash.now[:error] = update_fail_message
-        format.html { render :edit, status: :unprocessable_entity }
+        format.html do
+          render update_fail_action_modal_view, status: :unprocessable_entity
+        end
       end
+    end
+
+
+    def update_fail_action_modal_view
+      return :edit unless params[:modal_resource]
+
+      params[:modal_resource] == "new_sub_modal" ? :new_sub_modal : :new_modal
     end
 
     def update_success_message
