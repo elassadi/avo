@@ -1,10 +1,7 @@
 
-<%
-  target = params[:modal_resource] == "sub_modal_resource" ? "sub_modal_resource" : "modal_resource"
-%>
-
+<% target = params[:modal_resource] == "sub_modal_resource" ? "sub_modal_resource" : "modal_resource" %>
 <%= render Avo::TurboFrameWrapperComponent.new(target) do %>
   <%= render Avo::ModalResourceComponent.new do |c| %>
-    <%= render Avo::Views::ResourceEditModalComponent.new(resource: @resource, model: @model, view: @view, actions: @actions) %>
+    <%= render Avo::Views::ResourceEditModalComponent.new(resource: @resource, model: @model, view: @view, actions: @actions, parent_component: c) %>
   <% end %>
 <% end %>

@@ -8,6 +8,7 @@
     **@resource.stimulus_data_attributes
   } do %>
   <%= form_with model: @resource.model,
+    id: "modal_form_#{SecureRandom.hex(4)}",
     scope: @resource.form_scope,
     url: form_url,
     method: form_method,
@@ -58,40 +59,45 @@
           <% end %>
         <% end %>
         <%# if Avo.configuration.buttons_on_form_footers   %>
-          <% c.footer_tools do %>
-            <div class="mt-4">
-              <% if can_see_the_destroy_button? && @resource.model.persisted? %>
-                <%= a_link modal_destroy_path,
-                  style: :text,
-                  color: :red,
-                  icon: 'trash',
-                  form_class: 'flex flex-col sm:flex-row sm:inline-flex',
-                  data: {
-                    turbo_confirm: t('avo.are_you_sure', item: @resource.model.model_name.name.downcase),
-                    turbo_method: :delete,
-                    turbo_frame: 'destroy_attachment_form',
-                    control: :destroy,
-                    'resource-id': @resource.model.id,
-                  } do %>
-                  <%= t('avo.delete').capitalize %>
+
+          <% @parent_component.controls do %>
+            <%footer = c.footer_tools do %>
+              <div class="mt-2 flex space-x-2 items-center">
+                <% if can_see_the_destroy_button? && @resource.model.persisted? %>
+                  <%= a_link modal_destroy_path,
+                    style: :text,
+                    color: :red,
+                    icon: 'trash',
+                    form_class: 'flex flex-col sm:flex-row sm:inline-flex',
+                    data: {
+                      turbo_confirm: t('avo.are_you_sure', item: @resource.model.model_name.name.downcase),
+                      turbo_method: :delete,
+                      turbo_frame: 'destroy_attachment_form',
+                      control: :destroy,
+                      'resource-id': @resource.model.id,
+                    } do %>
+                    <%= t('avo.delete').capitalize %>
+                  <% end %>
                 <% end %>
-              <% end %>
-              <%= a_button type: :button,
-                data: { action: 'click->modal#close' },
-                size: :sm,
-                color: :gray do %>
-                <%= t('avo.cancel').capitalize %>
-              <% end %>
-              <% if can_see_the_save_button? %>
-                <%= a_button color: :primary,
-                style: :primary,
-                loading: true,
-                type: :submit,
-                icon: 'save' do %>
-                  <%= t('avo.save').capitalize %>
+                <%= a_button type: :button,
+                  data: { action: 'click->modal#close' },
+                  size: :sm,
+                  color: :gray do %>
+                  <%= t('avo.cancel').capitalize %>
                 <% end %>
-              <% end %>
-            </div>
+                <% if can_see_the_save_button? %>
+                  <%= a_button color: :primary,
+                  style: :primary,
+                  loading: true,
+                  type: :submit,
+                  form: form.options[:id],
+                  icon: 'save' do %>
+                    <%= t('avo.save').capitalize %>
+                  <% end %>
+                <% end %>
+              </div>
+            <% end %>
+          <% footer.to_s    %>
           <% end %>
         <%# end %>
       <% end %>
