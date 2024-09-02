@@ -6,7 +6,6 @@ export default class extends Controller {
 
 
   connect() {
-    console.log('Modal controller connected')
     this.setupKeyBindings()
   }
   disconnect() {
@@ -43,12 +42,35 @@ export default class extends Controller {
     }
   }
 
-  handleKeydown(event) {
-    console.log('handling keydown', event.key)
+  __handleKeydown(event) {
     if (event.key === 'Enter') {
       event.preventDefault()
       const submitButton = this.modalTarget.querySelector('button[type="submit"]')
       if (submitButton) {
+        submitButton.click()
+      }
+    } else if (event.key === 'Escape') {
+      this.close()
+    }
+  }
+
+  handleKeydown(event) {
+    if (event.key === 'Enter' && !event.ctrlKey) {
+      // Prevent form submission on Enter, unless Ctrl is pressed
+      const activeElement = document.activeElement
+      if (activeElement.tagName === 'TEXTAREA' || activeElement.tagName === 'TRIX-EDITOR') {
+        return
+      }
+      event.preventDefault()
+      const submitButton = this.modalTarget.querySelector('button[type="submit"]')
+      if (submitButton) {
+        submitButton.click()
+      }
+    } else if (event.key === 'Enter' && event.ctrlKey) {
+      // Allow form submission only if Ctrl + Enter is pressed
+      const submitButton = this.modalTarget.querySelector('button[type="submit"]')
+      if (submitButton) {
+        event.preventDefault()
         submitButton.click()
       }
     } else if (event.key === 'Escape') {
