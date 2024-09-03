@@ -1,6 +1,6 @@
 <%
-
-
+  turbo_frame_id="has_many_field_show_#{@resource.class.name.underscore.gsub("_resource", "").pluralize}"
+  resource_model_name = @resource.class.name.underscore.gsub("_resource", "")
   via_child_resource = Avo::App.get_resource(params[:via_child_resource])
   child_field_id = via_child_resource.class.name.underscore.gsub("_resource", "")
   field_id="#{child_field_id}_#{@resource.class.name.underscore.gsub("_resource", "")}_id"
@@ -35,6 +35,21 @@
           el.selectedIndex = 0;
         }
         el.dispatchEvent(new Event('change'));
+      }
+
+
+      document.dispatchEvent(
+        new CustomEvent("resourceDestroyed", {
+            detail: {
+              resourceModelName: "<%=resource_model_name%>",
+              resourceModelId: "<%=@model.id%>"
+            }
+          }
+        )
+      );
+      if ("<%= turbo_frame_id %>" != "") {
+        el =  document.getElementById("<%= turbo_frame_id %>")
+        if (el) { el.reload() }
       }
     </script>
   </template>
