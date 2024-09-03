@@ -171,6 +171,14 @@ module Avo
       self.class.grid_loader.hydrate(model: @model, view: @view, resource: self)
     end
 
+    def filter_exists?(filter_class)
+      begin
+        get_filters.find { |filter| filter[:class] == filter_class.constantize }
+      rescue
+        nil
+      end
+    end
+
     def get_filters
       return [] if self.class.filters_loader.blank?
 
