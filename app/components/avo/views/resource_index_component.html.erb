@@ -1,5 +1,7 @@
 <% #PATCH-TODO %>
-<% if @resources.present? || can_see_the_create_button? || @filters&.any?{|f| f.arguments.present?} %>
+<%# if @resources.present? || can_see_the_create_button? || @filters&.any?{|f| f.arguments.present?}
+%>
+<% if @resources.present? || can_see_the_create_button? || @applied_filters.present? %>
 	<%= content_tag :div,
 	  data: {
 	    model_name: @resource.model_name.to_s,
