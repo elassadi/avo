@@ -42,19 +42,18 @@ export default class extends Controller {
     }
   }
 
-  __handleKeydown(event) {
-    if (event.key === 'Enter') {
-      event.preventDefault()
-      const submitButton = this.modalTarget.querySelector('button[type="submit"]')
-      if (submitButton) {
-        submitButton.click()
-      }
-    } else if (event.key === 'Escape') {
-      this.close()
-    }
-  }
-
   handleKeydown(event) {
+
+
+    const activeModal = document.querySelector('.modal-container') // the primary modal
+    const detachedForm = document.querySelector('form.aa-Form[role="search"]') // the specific form
+
+    // If the detached form is present and active (focused), prevent key events in the main modal
+    if (detachedForm && detachedForm.contains(document.activeElement)) {
+      // Prevent key handling in the main modal if the search form is active
+      return
+    }
+
     if (event.key === 'Enter' && !event.ctrlKey) {
       // Prevent form submission on Enter, unless Ctrl is pressed
       const activeElement = document.activeElement
