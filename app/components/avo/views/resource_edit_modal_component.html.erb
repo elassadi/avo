@@ -21,12 +21,13 @@
     <%= content_tag :div, class: 'space-y-12' do %>
       <%= render Avo::PanelComponent.new(name: title, description: @resource.resource_description, display_breadcrumbs: false, index: 0, data: { panel_id: "main" }) do |c| %>
         <% c.tools do %>
+          <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view %>
           <%= a_button type: :button,
             data: { action: 'click->modal#close' },
             size: :sm,
             color: :gray do %>
             <%= t('avo.cancel').capitalize %>
-          <% end %>
+          <% end if false %>
 
           <% if can_see_the_save_button? %>
             <%= a_button color: :primary,
@@ -35,9 +36,9 @@
             type: :submit,
             icon: 'save' do %>
               <%= t('avo.save').capitalize %>
-            <% end %>
+            <% end if false %>
           <% end %>
-        <% end if false %>
+        <% end %>
         <%# Extract the main panel and display the fields here. %>
         <%# This way we'll be able to render the footer buttons under the main fields. %>
         <% if main_panel.present? %>
