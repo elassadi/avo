@@ -11,7 +11,7 @@
     <% c.tools do %>
       <% if @resource.has_show_controls? %>
         <% @resource.render_show_controls.each do |control| %>
-          <% if control.back_button? %>
+          <% if control.back_button? && !is_modal?%>
             <%= a_link back_path,
                 style: :text,
                 title: control.title,
@@ -174,7 +174,8 @@
       <% end %>
     <% end %>
   <% end %>
-  <% if @reflection.blank? %>
+
+  <% if @reflection.blank? && !is_modal?%>
     <%= content_tag :div, class: 'space-y-12 mt-12' do %>
       <% @resource.get_items.each_with_index do |item, index| %>
         <% next if item.nil? %>

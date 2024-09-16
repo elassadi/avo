@@ -4,7 +4,8 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
   include Avo::ResourcesHelper
   include Avo::ApplicationHelper
 
-  def initialize(resource: nil, reflection: nil, parent_resource: nil, parent_model: nil, resource_panel: nil, actions: [])
+  def initialize(resource: nil, reflection: nil, parent_resource: nil, parent_model: nil, resource_panel: nil, actions: [],
+  modal_resource: nil)
     @resource = resource
     @reflection = reflection
     @resource_panel = resource_panel
@@ -12,6 +13,7 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
     @parent_model = parent_model
     @parent_resource = parent_resource
     @view = :show
+    @modal_resource = modal_resource
   end
 
   def title
@@ -22,6 +24,10 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
     else
       @resource.default_panel_name
     end
+  end
+
+  def is_modal?
+    @modal_resource.present?
   end
 
   def back_path

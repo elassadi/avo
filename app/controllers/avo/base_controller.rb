@@ -103,6 +103,17 @@ module Avo
 
       add_breadcrumb @resource.model_title
       add_breadcrumb I18n.t("avo.details").upcase_first
+
+      respond_to do |format|
+        format.html { render show_modal_resource_view}
+      end
+    end
+
+
+    def show_modal_resource_view
+      return :show unless params[:modal_resource]
+
+      :show_modal
     end
 
     def new
