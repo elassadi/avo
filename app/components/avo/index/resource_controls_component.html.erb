@@ -11,6 +11,8 @@
       class: 'flex items-center',
       title: t('avo.view_item', item: singular_resource_name).capitalize,
       data: {
+        "turbo-frame": is_modal? ? "show_modal_resource_frame" : "",
+        'resource-id': @resource.model.id,
         target: 'control:view',
         control: :show,
         'tippy': 'tooltip',

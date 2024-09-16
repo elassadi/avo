@@ -124,7 +124,7 @@
             style: :text,
             icon: 'arrow-left' do %>
             <%= t('avo.go_back') %>
-          <% end %>
+          <% end if !is_modal? %>
           <% if can_see_the_destroy_button? %>
             <%= a_link destroy_path,
               style: :text,

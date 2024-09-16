@@ -1,5 +1,4 @@
-
-<%= render Avo::TurboFrameWrapperComponent.new(params[:turbo_frame]) do %>
+<%= render Avo::TurboFrameWrapperComponent.new("show_modal_resource_frame") do %>
 <%= render Avo::ModalResourceComponent.new do |c| %>
     <%= render Avo::Views::ResourceShowComponent.new(
       resource: @resource,
@@ -7,7 +6,7 @@
       actions: @actions,
       parent_model: @parent_model,
       parent_resource: @parent_resource,
-      modal_resource: :modal_resource
+      modal_resource: true
     ) %>
   <% end %>
 <% end %>

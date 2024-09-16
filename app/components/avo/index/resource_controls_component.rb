@@ -40,26 +40,21 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   def show_path
     args = {}
 
-
-    modal_resource = if field && field.modal_create.present?
-      enabled = field.modal_create.respond_to?(:call) ? field.modal_create.call(resource: @resource) : field.modal_create
-
-      if enabled
-        params[:modal_resource] == "modal_resource" ? "sub_modal_resource" : "modal_resource"
-      else
-        nil
-      end
-    end
-
     if @parent_model.present?
       args = {
         via_resource_class: parent_resource.class.to_s,
         via_resource_id: @parent_model.to_param,
-        modal_resource: modal_resource
+        modal_resource: is_modal?
       }
     end
 
     helpers.resource_path(model: @resource.model, resource: parent_or_child_resource , **args)
+  end
+
+  def is_modal?
+    if field && field.modal_create.present?
+      field.modal_create.respond_to?(:call) ? field.modal_create.call(resource: @resource) : field.modal_create
+    end
   end
 
   def edit_path
