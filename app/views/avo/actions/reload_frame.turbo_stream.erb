@@ -7,17 +7,20 @@
 <turbo-stream action="update" target="actions_show">
   <template>
     <script>
-      // Find the turbo frame 'modal_resource'
-      const modalResourceFrame = document.getElementById("modal_resource");
-       const fallbackLocation = "<%= fallback_location %>";
+      {
+        // This creates a block scope for variables
+        let modalResourceFrame = document.getElementById("modal_resource");
+        let fallbackLocation = "<%= fallback_location %>";
 
-      // Check if the turbo frame exists and has a 'src' attribute set
-      if (modalResourceFrame && modalResourceFrame.getAttribute("src")) {
-        console.log("reloading frame");
-        modalResourceFrame.reload();
-      } else {
-        console.log("Frame 'modal_resource' has no 'src', fallback to location: " + fallbackLocation);
-        window.location.href = fallbackLocation;  // Redirect to fallback path
+        if (modalResourceFrame && modalResourceFrame.getAttribute("src")) {
+          console.log("reloading frame");
+          alert("reloading frame");
+          modalResourceFrame.reload();
+        } else {
+          console.log("Frame 'modal_resource' has no 'src', redirecting to fallback location");
+          alert("redirecting to fallback location");
+          window.location.href = fallbackLocation;
+        }
       }
     </script>
   </template>
