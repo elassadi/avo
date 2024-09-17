@@ -1,0 +1,13 @@
+<turbo-stream action="append" target="alerts">
+  <template>
+    <%= render Avo::FlashAlertsComponent.new flashes: flash %>
+  </template>
+</turbo-stream>
+
+<turbo-stream action="update" target="actions_show">
+  <template>
+    <script>
+      document.getElementById("modal_resource").reload()
+    </script>
+  </template>
+</turbo-stream>

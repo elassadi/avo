@@ -79,6 +79,10 @@ module Avo
       end
 
       respond_to do |format|
+
+        format.turbo_stream do
+          render :reload_frame
+        end
         format.html do
           # Flash the messages collected from the action
           flash_messages messages
