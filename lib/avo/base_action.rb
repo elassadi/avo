@@ -184,6 +184,13 @@ module Avo
       self
     end
 
+    def close_frame
+      response[:close_frame] = true
+
+      self
+    end
+
+
     # Add a placeholder silent message from when a user wants to do a redirect action or something similar
     def silent
       add_message nil, :silent

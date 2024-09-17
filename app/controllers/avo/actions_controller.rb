@@ -81,7 +81,11 @@ module Avo
       respond_to do |format|
 
         format.turbo_stream do
-          render :reload_frame, locals: { fallback_location: resources_path(resource: @resource) }
+          if response[:close_frame]
+            render :close_frame, locals: { fallback_location: resources_path(resource: @resource) }
+          else
+            render :reload_frame, locals: { fallback_location: resources_path(resource: @resource) }
+          end
         end
         format.html do
           # Flash the messages collected from the action
