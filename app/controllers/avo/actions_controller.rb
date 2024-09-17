@@ -81,6 +81,7 @@ module Avo
       respond_to do |format|
 
         format.turbo_stream do
+          flash_messages messages
           if response[:close_frame]
             render :close_frame
           else
@@ -90,7 +91,6 @@ module Avo
         format.html do
           # Flash the messages collected from the action
           flash_messages messages
-
           if response[:type] == :redirect
             path = response[:path]
 
