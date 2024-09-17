@@ -1,3 +1,9 @@
+<%
+  #turbo_frame_id="has_many_field_show_#{@resource.class.name.underscore.gsub("_resource", "").pluralize}"
+  resource_model_name = @resource.class.name.underscore.gsub("_resource", "")
+  #target = params[:modal_resource] == "sub_modal_resource" ? "sub_modal_resource" : "modal_resource"
+%>
+
 <turbo-stream action="append" target="alerts">
   <template>
     <%= render Avo::FlashAlertsComponent.new flashes: flash %>
@@ -14,10 +20,20 @@
 
         if (modalResourceFrame && modalResourceFrame.getAttribute("src")) {
             modalResourceFrame.innerHTML = "";
+            document.dispatchEvent(
+            new CustomEvent("resourceUpdated", {
+                detail: {
+                  resourceModelName: "<%=resource_model_name%>",
+                  resourceModelId: "<%=@model&.id%>"
+                }
+              }
+            )
+          );
         } else {
           console.log("Frame 'modal_resource' has no 'src', redirecting to fallback location");
           window.location.href = fallbackLocation;
         }
+
       }
     </script>
   </template>
