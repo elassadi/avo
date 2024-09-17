@@ -82,9 +82,9 @@ module Avo
 
         format.turbo_stream do
           if response[:close_frame]
-            render :close_frame, locals: { fallback_location: resources_path(resource: @resource) }
+            render :close_frame
           else
-            render :reload_frame, locals: { fallback_location: resources_path(resource: @resource) }
+            render :reload_frame
           end
         end
         format.html do
