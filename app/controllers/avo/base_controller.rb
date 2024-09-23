@@ -572,7 +572,7 @@ module Avo
 
       if @resource.class.send(action) == :index
         resources_path(resource: @resource)
-      elsif @resource.class.send(action) == :edit || Avo.configuration.resource_default_view == :edit
+      elsif @resource.class.send(action) == :edit || @resource.resource_default_view_or_global_default_view == :edit
         edit_resource_path(resource: @resource, model: @resource.model)
       else
         resource_path(model: @model, resource: @resource)

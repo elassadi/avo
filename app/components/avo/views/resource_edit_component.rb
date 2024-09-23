@@ -19,7 +19,7 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
     return resource_view_path if via_resource?
     return resources_path if via_index?
 
-    if is_edit? && Avo.configuration.resource_default_view == :show # via resource show or edit page
+    if is_edit? && @resource.resource_default_view_or_global_default_view == :show
       return helpers.resource_path(model: @resource.model, resource: @resource)
     end
 
@@ -36,7 +36,9 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
 
   def can_see_the_destroy_button?
 
-    return super if is_edit? && (Avo.configuration.resource_default_view == :edit || params[:modal_resource])
+    return super if is_edit? && (
+      @resource.resource_default_view_or_global_default_view == :edit || params[:modal_resource]
+    )
 
     false
   end

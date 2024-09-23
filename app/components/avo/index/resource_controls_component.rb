@@ -23,7 +23,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   end
 
   def can_view?
-    return false if Avo.configuration.resource_default_view == :edit
+    return false if @resource.resource_default_view_or_global_default_view == :edit
 
     return authorize_association_for(:show) if @reflection.present?
 

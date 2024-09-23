@@ -54,6 +54,8 @@ module Avo
     class_attribute :keep_filters_panel_open, default: false
     class_attribute :extra_params
     class_attribute :link_to_child_resource, default: false
+    # PATCH-TODO
+    class_attribute :resource_default_view, default: :show
 
     class << self
       delegate :t, to: ::I18n
@@ -144,6 +146,10 @@ module Avo
           self.class.model_class = model_class.base_class
         end
       end
+    end
+
+    def resource_default_view_or_global_default_view
+      self.class.resource_default_view || Avo.configuration.resource_default_view
     end
 
     def record

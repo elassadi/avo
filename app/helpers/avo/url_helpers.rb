@@ -78,7 +78,7 @@ module Avo
     end
 
     def resource_view_path(**args)
-      if Avo.configuration.resource_default_view == :edit
+      if @resource.resource_default_view_or_global_default_view == :edit
         edit_resource_path(**args)
       else
         resource_path(**args)
