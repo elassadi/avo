@@ -55,7 +55,7 @@ module Avo
     class_attribute :extra_params
     class_attribute :link_to_child_resource, default: false
     # PATCH-TODO
-    class_attribute :resource_default_view, default: :show
+    class_attribute :resource_default_view, default: nil
 
     class << self
       delegate :t, to: ::I18n
