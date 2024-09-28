@@ -2,7 +2,6 @@
   turbo_frame_id="has_many_field_show_#{@resource.class.name.underscore.gsub("_resource", "").pluralize}"
   resource_model_name = @resource.class.name.underscore.gsub("_resource", "")
   #target = params[:modal_resource] == "sub_modal_resource" ? "sub_modal_resource" : "modal_resource"
-  binding.pry
 %>
 
 <turbo-stream action="append" target="alerts">
