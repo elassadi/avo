@@ -29,13 +29,13 @@
 
       el = document.querySelectorAll("input[type=text][id=<%= field_id %>]")[0]
       if (el) {
-        el.setAttribute("value", "<%= @resource.model_title %>")
+        el.setAttribute("value", "<%= j(@resource.model_title) %>")
         el.dispatchEvent(new Event('input'));
         el.dispatchEvent(new Event('change'));
       }
       el = document.querySelectorAll("select[id=<%= field_id %>]")[0]
       if (el) {
-        let newOption = new Option('<%= @resource.model_title %>','<%= @resource.model.id %>', true, true);
+        let newOption = new Option('<%= j(@resource.model_title) %>','<%= @resource.model.id %>', true, true);
         el.add(newOption);
         el.dispatchEvent(new Event('change'));
       }
