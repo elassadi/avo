@@ -119,7 +119,7 @@
         if !disabled && @field.in_line_method_allowed?(:create)
           data.merge!(
             {
-              "action": "#{data["action"]} resource-edit#onInlineInputChange",
+              "action": "#{data[:action] || data["action"]} resource-edit#onInlineInputChange",
               "resource-edit-target": "inLineSourceInput",
               "in-line-source-target-field-id": edit_button_id
             }
