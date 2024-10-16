@@ -34,6 +34,7 @@ export default class extends Controller {
     this.markTabLoaded(id)
 
     this.activeTabValue = id
+
   }
 
   /**
@@ -42,6 +43,10 @@ export default class extends Controller {
   async setTheTargetPanelHeight(id) {
     // Ignore this on edit.
     // All tabs are loaded beforehand, they have their own height, and the page won't jiggle when the user toggles between them.
+    setTimeout(() => {
+      this.targetTabPanel(id).scrollIntoView({ behavior: 'smooth' });
+    }, 500);
+
     if (this.viewValue === 'edit' || this.viewValue === 'new') {
       return
     }
@@ -58,7 +63,9 @@ export default class extends Controller {
 
     // Wait until the panel loaded it's content and then remove the forced height
     await this.targetTabPanel(id).loaded
+
     this.targetTabPanel(id).style.height = ''
+
   }
 
   // Marking tab as loaded so we know to skip some things the next time the user clicks on it
