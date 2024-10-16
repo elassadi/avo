@@ -1,5 +1,5 @@
 <%
-  #turbo_frame_id="has_many_field_show_#{@resource.class.name.underscore.gsub("_resource", "").pluralize}"
+  turbo_frame_id="has_many_field_show_#{@resource.class.name.underscore.gsub("_resource", "").pluralize}"
   resource_model_name = @resource.class.name.underscore.gsub("_resource", "")
   #target = params[:modal_resource] == "sub_modal_resource" ? "sub_modal_resource" : "modal_resource"
 %>
@@ -15,20 +15,34 @@
     <script>
       {
         // This creates a block scope for variables
+        let src = undefined;
         let modalResourceFrame = document.getElementById("modal_resource");
+        if (modalResourceFrame) {
+            src = modalResourceFrame.getAttribute("src")
+        }
+
+        if (!src) {
+            modalResourceFrame = document.getElementById("actions_show");
+            src = modalResourceFrame.getAttribute("src")
+        }
 
 
-        if (modalResourceFrame && modalResourceFrame.getAttribute("src")) {
+
+        if (modalResourceFrame && src) {
             modalResourceFrame.innerHTML = "";
             document.dispatchEvent(
-            new CustomEvent("resourceUpdated", {
-                detail: {
-                  resourceModelName: "<%=resource_model_name%>",
-                  resourceModelId: "<%=@model&.id%>"
+              new CustomEvent("resourceUpdated", {
+                  detail: {
+                    resourceModelName: "<%=resource_model_name%>",
+                    resourceModelId: "<%=@model&.id%>"
+                  }
                 }
-              }
-            )
-          );
+              )
+            );
+            el =  document.getElementById("<%= turbo_frame_id %>")
+            if (el) {
+              el.reload()
+            }
         } else {
           console.log("Frame 'modal_resource' has no 'src', redirecting to fallback location");
           window.location.reload();

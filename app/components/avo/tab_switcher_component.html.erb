@@ -1,5 +1,5 @@
 <% if style == :tabs %>
-  <div class="flex overflow-auto mac-styled-scrollbar" data-target="tab-switcher" data-style="tabs">
+  <div class="flex overflow-auto mac-styled-scrollbar border-b-2 border-gray-800" data-target="tab-switcher" data-style="tabs">
     <div class="button-group">
       <% visible_items.each do |tab| %>
         <%= a_link tab_path(tab),
