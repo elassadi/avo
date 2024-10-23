@@ -36,7 +36,7 @@ export default class extends BaseController {
       enforceWhitelist: this.enforceSuggestionsValue || this.fetchValuesFromValue,
       delimiters: this.delimitersValue.join('|'),
       dropdown: {
-        maxItems: 20,
+        maxItems: 40,
         enabled: 0,
         searchKeys: [this.labelAttributeValue],
         closeOnSelect: this.closeOnSelectValue,
