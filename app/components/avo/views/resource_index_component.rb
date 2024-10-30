@@ -132,6 +132,10 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     field&.hide_search_input || false
   end
 
+  def show_filters
+    field&.show_filters
+  end
+
   private
 
   def reflection_model_class
