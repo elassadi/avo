@@ -49,6 +49,8 @@ function initTippy() {
   })
 }
 window.initTippy = initTippy
+window.tippy = tippy
+
 
 ActiveStorage.start()
 
