@@ -195,7 +195,8 @@ export default class extends Controller {
       this.updateFieldAttribute(this.hiddenIdTarget, 'value', item._id)
       this.updateFieldAttribute(this.buttonTarget, 'value', item._label)
 
-      document.querySelector('.aa-DetachedOverlay').remove()
+      if (document.querySelector('.aa-DetachedOverlay'))
+        document.querySelector('.aa-DetachedOverlay').remove()
 
       if (this.hasClearButtonTarget) {
         this.clearButtonTarget.classList.remove('hidden')
