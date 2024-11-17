@@ -12,6 +12,8 @@ module Avo
     class_attribute :user
     class_attribute :resource
     class_attribute :standalone, default: false
+    class_attribute :icon
+    class_attribute :icon_class
     class_attribute :visible
     class_attribute :may_download_file, default: false
 
