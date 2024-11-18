@@ -72,6 +72,7 @@ module Avo
         @format_using = args[:format_using] || nil
         @placeholder = args[:placeholder]
         @help = args[:help] || nil
+        @orig_help = args[:help] || nil
         @default = args[:default] || nil
         @visible = args[:visible] || true
         @as_label = args[:as_label] || false
@@ -160,6 +161,14 @@ module Avo
           visible.call resource: @resource
         else
           visible
+        end
+      end
+
+      def help
+        if @help.respond_to?(:call)
+          @help.call resource: @resource, orig_help: @orig_help
+        else
+          @help
         end
       end
 
