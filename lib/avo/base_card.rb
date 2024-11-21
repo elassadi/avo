@@ -12,6 +12,7 @@ module Avo
     # private
     class_attribute :result_data
     class_attribute :query_block
+    class_attribute :visible, default: true
 
     attr_accessor :dashboard
     attr_accessor :options
@@ -41,6 +42,14 @@ module Avo
       @label = label
       @refresh_every = refresh_every
       @description = description
+    end
+
+    def visible?
+      return self.class.visible if self.class.visible.in? [true, false]
+
+      if visible.respond_to? :call
+        self.class.visible.call(self)
+      end
     end
 
     def label

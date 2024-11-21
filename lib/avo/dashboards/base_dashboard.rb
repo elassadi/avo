@@ -49,7 +49,8 @@ module Avo
         end
 
         def items
-          self.items_holder
+          return [] unless items_holder
+          items_holder.select(&:visible?)
         end
 
         def classes
