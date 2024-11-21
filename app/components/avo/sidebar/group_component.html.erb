@@ -9,17 +9,23 @@
   <% if item.name.present? %>
     <% if collapsable %>
       <div
-        class="flex justify-between cursor-pointer px-10 pr-2 pt-2 pb-0 text-gray-400"
+        class="flex justify-between cursor-pointer px-5 pr-2 pt-2 pb-0 text-gray-400"
         data-action="click->menu#triggerCollapse"
         data-menu-key-param="<%= key %>"
       >
-        <div class="flex items-center text-xs uppercase font-semibold leading-none">
-          <%= item.name %>
+        <!-- Grouped SVG and text -->
+        <div class="flex items-center">
+          <%= helpers.svg icon, class: "h-4 mr-0.5" %>
+          <div class="text-xs uppercase font-semibold leading-none ml-1">
+            <%= item.name %>
+          </div>
         </div>
+
+        <!-- Chevron icon at the far right -->
         <div class="<%= 'rotate-90' if collapsed %>"
           data-menu-target="svg"
-          >
-          <%= helpers.svg 'heroicons/outline/chevron-down', class: "h-4 mr-0.5"%>
+        >
+          <%= helpers.svg 'heroicons/outline/chevron-down', class: "h-4 mr-0.5" %>
         </div>
       </div>
     <% else %>
