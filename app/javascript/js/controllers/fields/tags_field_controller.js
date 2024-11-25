@@ -73,6 +73,13 @@ export default class extends BaseController {
     }
   }
 
+  disconnect() {
+    if (this.tagify) {
+      this.tagify.destroy(); // Destroy the Tagify instance
+      this.tagify = null; // Clean up the reference
+    }
+  }
+
   initTagify() {
     this.tagify = new Tagify(this.inputTarget, this.tagifyOptions)
     const that = this
