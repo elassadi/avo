@@ -6,6 +6,7 @@ module Avo
       attr_reader :options_from_args
       attr_reader :enum
       attr_reader :display_value
+      attr_reader :multiple
 
       def initialize(id, **args, &block)
         args[:placeholder] ||= I18n.t("avo.choose_an_option")
@@ -19,6 +20,7 @@ module Avo
         end
         @enum = args[:enum].present? ? args[:enum] : nil
         @display_value = args[:display_value].present? ? args[:display_value] : false
+        @multiple = args[:multiple].present? ? args[:multiple] : false
       end
 
       def options_for_select
