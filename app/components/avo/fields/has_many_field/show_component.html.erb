@@ -1,3 +1,74 @@
-<turbo-frame id="<%= @field.turbo_frame %>" src="<%= @field.frame_url %>" target="_top" class="block">
-  <%= render(Avo::LoadingComponent.new(title: @field.name)) %>
-</turbo-frame>
+<div class="avo-has-many-collapsible"
+     data-controller="has-many-collapsible"
+     data-has-many-collapsible-resource-name-value="<%= resource_name %>"
+     data-has-many-collapsible-field-name-value="<%= field_name %>"
+     data-has-many-collapsible-url-value="<%= has_many_url %>">
+  <div class="avo-has-many-header"
+       data-action="click->has-many-collapsible#toggle"
+       role="button"
+       tabindex="0"
+       data-has-many-collapsible-target="header">
+    <div class="flex-1 flex flex-col xl:flex-row justify-between mb-4">
+      <div class="overflow-hidden flex flex-col">
+        <div class="text-2xl tracking-normal font-semibold text-gray-800 truncate items-center flex flex-1 cursor-pointer hover:text-gray-900 transition-colors">
+          <div class="flex items-center gap-3">
+            <svg class="avo-has-many-toggle-icon w-6 h-6 text-gray-500 transition-transform duration-200 flex-shrink-0"
+                 data-has-many-collapsible-target="icon"
+                 fill="none"
+                 stroke="currentColor"
+                 viewBox="0 0 24 24"
+                 xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            <span><%= field_label %></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="avo-has-many-content hidden overflow-hidden transition-all duration-300"
+       data-has-many-collapsible-target="content">
+    <turbo-frame id="<%= @field.turbo_frame %>"
+                 target="_top"
+                 class="block"
+                 data-has-many-collapsible-target="frame"
+                 data-action="turbo:frame-load->has-many-collapsible#onFrameLoad">
+      <%= render(Avo::LoadingComponent.new(title: @field.name)) %>
+    </turbo-frame>
+  </div>
+</div>
+
+<style>
+  .avo-has-many-collapsible {
+    @apply border-b border-gray-200;
+  }
+
+  .avo-has-many-header {
+    @apply select-none;
+  }
+
+  .avo-has-many-header:focus {
+    @apply outline-none ring-2 ring-blue-500 ring-offset-2 rounded;
+  }
+
+  .avo-has-many-content {
+    @apply transition-all duration-300 ease-in-out;
+  }
+
+  .avo-has-many-content.expanded {
+    @apply block;
+  }
+
+  .avo-has-many-toggle-icon {
+    @apply transition-transform duration-200;
+  }
+
+  .avo-has-many-toggle-icon.expanded {
+    @apply rotate-45;
+  }
+
+  .avo-has-many-header:hover .avo-has-many-toggle-icon {
+    @apply text-gray-700;
+  }
+
+</style>

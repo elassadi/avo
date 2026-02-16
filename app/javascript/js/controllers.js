@@ -10,6 +10,7 @@ import CopyToClipboardController from './controllers/copy_to_clipboard_controlle
 import DashboardCardController from './controllers/dashboard_card_controller'
 import DateFieldController from './controllers/fields/date_field_controller'
 import FilterController from './controllers/filter_controller'
+import HasManyCollapsibleController from './controllers/fields/has_many_collapsible_controller'
 import HiddenInputController from './controllers/hidden_input_controller'
 import ItemSelectAllController from './controllers/item_select_all_controller'
 import ItemSelectorController from './controllers/item_selector_controller'
@@ -67,6 +68,7 @@ application.register('toggle-panel', TogglePanelController)
 application.register('belongs-to-field', BelongsToFieldController)
 application.register('code-field', CodeFieldController)
 application.register('date-field', DateFieldController)
+application.register('has-many-collapsible', HasManyCollapsibleController)
 application.register('key-value', KeyValueController)
 application.register('progress-bar-field', ProgressBarFieldController)
 application.register('simple-mde', SimpleMdeController)
