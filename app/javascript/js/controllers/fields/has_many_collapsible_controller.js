@@ -11,6 +11,9 @@ export default class extends Controller {
   static STORAGE_KEY = 'fields_state'
 
   connect() {
+    // Check visibility state first
+    this.checkVisibility()
+    
     // Restore state from localStorage on page load
     const storedState = this.getStoredState()
     if (storedState === true) {
@@ -20,6 +23,33 @@ export default class extends Controller {
       // Ensure collapsed state (don't load content)
       this.collapse()
     }
+  }
+
+  checkVisibility() {
+    const visibilityState = this.getVisibilityState()
+    const resourceName = this.resourceNameValue
+    const fieldName = this.fieldNameValue
+    
+    if (!resourceName || !fieldName) return
+
+    // Default to visible if not set
+    const isVisible = visibilityState[resourceName]?.[fieldName] !== false
+    
+    if (!isVisible) {
+      this.element.closest('.avo-has-many-collapsible').style.display = 'none'
+    }
+  }
+
+  getVisibilityState() {
+    const fieldsState = this.getFieldsState()
+    const resourceState = fieldsState[this.resourceNameValue]
+    if (!resourceState) return {}
+    const result = {}
+    Object.keys(resourceState).forEach(fieldName => {
+      const raw = resourceState[fieldName]
+      result[fieldName] = typeof raw === 'object' && raw != null && 'visible' in raw ? raw.visible !== false : true
+    })
+    return { [this.resourceNameValue]: result }
   }
 
   toggle(event) {
@@ -112,18 +142,29 @@ export default class extends Controller {
     if (!this.resourceNameValue || !this.fieldNameValue) return false
 
     try {
-      const fieldsStateJson = localStorage.getItem(this.constructor.STORAGE_KEY)
-      if (!fieldsStateJson) return false
-
-      const fieldsState = JSON.parse(fieldsStateJson)
-      const resourceState = fieldsState[this.resourceNameValue]
-      
-      if (!resourceState) return false
-      
-      return resourceState[this.fieldNameValue] === true
+      const raw = this.getFieldState()
+      if (raw == null) return false
+      // Support legacy boolean (expanded only) or new shape { expanded, visible }
+      return typeof raw === 'boolean' ? raw : (raw.expanded === true)
     } catch (error) {
       console.warn('Failed to read from localStorage:', error)
       return false
+    }
+  }
+
+  getFieldState() {
+    const fieldsState = this.getFieldsState()
+    const resourceState = fieldsState[this.resourceNameValue]
+    if (!resourceState) return null
+    return resourceState[this.fieldNameValue]
+  }
+
+  getFieldsState() {
+    try {
+      const fieldsStateJson = localStorage.getItem(this.constructor.STORAGE_KEY)
+      return fieldsStateJson ? JSON.parse(fieldsStateJson) : {}
+    } catch (e) {
+      return {}
     }
   }
 
@@ -131,27 +172,16 @@ export default class extends Controller {
     if (!this.resourceNameValue || !this.fieldNameValue) return
 
     try {
-      // Get existing state or initialize empty object
-      let fieldsState = {}
-      const fieldsStateJson = localStorage.getItem(this.constructor.STORAGE_KEY)
-      if (fieldsStateJson) {
-        try {
-          fieldsState = JSON.parse(fieldsStateJson)
-        } catch (e) {
-          // If parsing fails, start fresh
-          fieldsState = {}
-        }
-      }
-
-      // Initialize resource state if it doesn't exist
+      const fieldsState = this.getFieldsState()
       if (!fieldsState[this.resourceNameValue]) {
         fieldsState[this.resourceNameValue] = {}
       }
-
-      // Update field state
-      fieldsState[this.resourceNameValue][this.fieldNameValue] = expanded
-
-      // Save back to localStorage
+      const current = fieldsState[this.resourceNameValue][this.fieldNameValue]
+      const isObject = current != null && typeof current === 'object' && !Array.isArray(current)
+      fieldsState[this.resourceNameValue][this.fieldNameValue] = {
+        ...(isObject ? current : { visible: true }),
+        expanded
+      }
       localStorage.setItem(this.constructor.STORAGE_KEY, JSON.stringify(fieldsState))
     } catch (error) {
       console.warn('Failed to save to localStorage:', error)

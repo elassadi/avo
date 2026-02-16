@@ -1,0 +1,125 @@
+---
+de:
+  avo:
+    action_ran_successfully: Aktion erfolgreich ausgeführt!
+    actions: Aktionen
+    and_x_other_resources: und %{count} weitere Ressourcen
+    are_you_sure: Sind Sie sicher?
+    are_you_sure_detach_item: Sind Sie sicher, dass Sie %{item} trennen möchten?
+    are_you_sure_you_want_to_run_this_option: Sind Sie sicher, dass Sie diese Aktion ausführen möchten?
+    attach: Anhängen
+    attach_and_attach_another: Anhängen & Weiteres anhängen
+    attach_item: "%{item} anhängen"
+    attachment_class_attached: "%{attachment_class} angehängt."
+    attachment_class_detached: "%{attachment_class} getrennt."
+    attachment_destroyed: Anhang gelöscht
+    cancel: Abbrechen
+    choose_a_country: Wählen Sie ein Land
+    choose_an_option: Wählen Sie eine Option
+    choose_item: "%{item} wählen"
+    clear_value: Wert löschen
+    click_to_reveal_filters: Klicken Sie, um Filter anzuzeigen
+    confirm: Bestätigen
+    create_new_item: Neues %{item} erstellen
+    dashboard: Dashboard
+    dashboards: Dashboards
+    delete: löschen
+    delete_file: Datei löschen
+    delete_item: "%{item} löschen"
+    detach_item: "%{item} trennen"
+    details: Details
+    download: Herunterladen
+    download_file: Datei herunterladen
+    download_item: "%{item} herunterladen"
+    edit: bearbeiten
+    edit_item: "%{item} bearbeiten"
+    empty_dashboard_message: Karten zu diesem Dashboard hinzufügen
+    failed: Fehlgeschlagen
+    failed_to_find_attachment: Anhang nicht gefunden
+    failed_to_load: Laden fehlgeschlagen
+    field_translations:
+      file:
+        one: Datei
+        other: Dateien
+        zero: Dateien
+      people:
+        one: Person
+        other: Personen
+        zero: Personen
+    filter_by: Filtern nach
+    filters: Filter
+    go_back: Zurück
+    grid_view: Rasteransicht
+    hide_content: Inhalt ausblenden
+    home: Startseite
+    key_value_field:
+      add_row: Zeile hinzufügen
+      delete_row: Zeile löschen
+      key: Schlüssel
+      value: Wert
+    list_is_empty: Liste ist leer
+    loading: Lädt
+    more: Mehr
+    new: neu
+    next_page: Nächste Seite
+    no_cards_present: Keine Karten vorhanden
+    no_item_found: Kein Datensatz gefunden
+    no_options_available: Keine Optionen verfügbar
+    no_related_item_found: Kein verwandter Datensatz gefunden
+    not_authorized: Sie sind nicht berechtigt, diese Aktion auszuführen.
+    number_of_items:
+      one: ein %{item}
+      other: "%{count} %{item}"
+      zero: kein %{item}
+    oops_nothing_found: Ups! Nichts gefunden...
+    order:
+      higher: Datensatz nach oben verschieben
+      lower: Datensatz nach unten verschieben
+      reorder_record: Datensatz neu ordnen
+      to_bottom: Datensatz nach ganz unten verschieben
+      to_top: Datensatz nach ganz oben verschieben
+    per_page: Pro Seite
+    prev_page: Vorherige Seite
+    remove_selection: Auswahl entfernen
+    reset_filters: Filter zurücksetzen
+    resource_created: Datensatz erstellt
+    resource_destroyed: Datensatz gelöscht
+    resource_translations:
+      team_members:
+        one: Teammitglied
+        other: Teammitglieder
+        zero: Teammitglieder
+      user:
+        one: Benutzer
+        other: Benutzer
+        zero: Benutzer
+    resource_updated: Datensatz aktualisiert
+    resources: Ressourcen
+    run: Ausführen
+    save: Speichern
+    search:
+      cancel_button: Abbrechen
+      placeholder: Suchen
+    select_all: Alle auswählen
+    select_all_matching: Alle passenden auswählen
+    select_item: Element auswählen
+    show_content: Inhalt anzeigen
+    sign_out: Abmelden
+    switch_to_view: Zu %{view_type} Ansicht wechseln
+    table_view: Tabellenansicht
+    toggle_fields_visibility: Sichtbarkeit der Felder umschalten
+    tools: Tools
+    type_to_search: Zum Suchen tippen.
+    unauthorized: Nicht autorisiert
+    undo: rückgängig
+    view: Anzeigen
+    view_item: "%{item} anzeigen"
+    was_successfully_created: wurde erfolgreich erstellt
+    was_successfully_updated: wurde erfolgreich aktualisiert
+    x_items_more:
+      one: ein weiteres Element
+      other: "%{count} weitere Elemente"
+      zero: keine weiteren Elemente
+    x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> Datensätze auf dieser Seite ausgewählt von insgesamt <span class="font-bold text-gray-700">%{count}</span>
+    x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> Datensätze von allen Seiten ausgewählt
+    you_missed_something_check_form: Sie haben möglicherweise etwas übersehen. Bitte überprüfen Sie das Formular.

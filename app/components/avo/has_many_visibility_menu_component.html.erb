@@ -1,0 +1,55 @@
+<% if @has_many_fields.any? %>
+  <div class="relative inline-flex"
+       data-controller="has-many-visibility-menu toggle-panel"
+       data-has-many-visibility-menu-resource-name-value="<%= resource_name %>">
+    <%= a_button style: :text,
+      type: :button,
+      color: :gray,
+      compact: true,
+      size: :xs,
+      class: "focus:outline-none w-auto flex-shrink-0",
+      icon: 'heroicons/outline/bars-3',
+      title: t('avo.fields_visibility', default: 'Fields Visibility'),
+      'data-action': "click->toggle-panel#togglePanel",
+      'data-toggle-panel-target': 'button',
+      'data-tippy': 'tooltip' do %>
+    <% end %>
+    <div
+      class="absolute inset-auto xl:right-0 top-full bg-white w-full sm:w-auto sm:min-w-[300px] mt-2 z-40 shadow-modal rounded overflow-hidden hidden"
+      data-toggle-panel-target="panel"
+    >
+      <div class="w-full space divide-y">
+        <div class="px-4 py-3 border-b">
+          <div class="flex items-center gap-3">
+            <label class="flex items-center cursor-pointer flex-shrink-0"
+                   data-has-many-visibility-menu-target="selectAllItem">
+              <input type="checkbox"
+                     class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                     data-action="change->has-many-visibility-menu#toggleAllFields"
+                     data-has-many-visibility-menu-target="selectAllCheckbox">
+              <span class="ml-2 text-xs text-gray-600 font-medium">
+                <%= t('avo.select_all', default: 'Select All') %>
+              </span>
+            </label>
+            <h3 class="text-sm font-semibold text-gray-800 flex-1 no-break">
+              <%= t('avo.toggle_fields_visibility', default: 'Toggle Fields Visibility') %>
+            </h3>
+          </div>
+        </div>
+        <% @has_many_fields.each do |field| %>
+          <label class="flex items-center px-4 py-3 w-full font-semibold text-sm hover:bg-gray-50 cursor-pointer"
+                 data-has-many-visibility-menu-target="fieldItem"
+                 data-field-name="<%= field.id.to_s %>">
+            <input type="checkbox"
+                   class="mr-3 h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                   data-action="change->has-many-visibility-menu#toggleField"
+                   data-has-many-visibility-menu-target="checkbox"
+                   data-field-name="<%= field.id.to_s %>"
+                   checked="checked">
+            <span class="flex-1"><%= field.name.to_s.humanize %></span>
+          </label>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

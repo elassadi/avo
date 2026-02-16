@@ -35,6 +35,7 @@ import TextFilterController from './controllers/text_filter_controller'
 import TippyController from './controllers/tippy_controller'
 import TogglePanelController from './controllers/toggle_panel_controller'
 import TrixFieldController from './controllers/fields/trix_field_controller'
+import HasManyVisibilityMenuController from './controllers/has_many_visibility_menu_controller'
 
 application.register('action', ActionController)
 application.register('actions-picker', ActionsPickerController)
@@ -63,6 +64,7 @@ application.register('tags-field', TagsFieldController)
 application.register('text-filter', TextFilterController)
 application.register('tippy', TippyController)
 application.register('toggle-panel', TogglePanelController)
+application.register('has-many-visibility-menu', HasManyVisibilityMenuController)
 
 // Field controllers
 application.register('belongs-to-field', BelongsToFieldController)

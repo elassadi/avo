@@ -55,4 +55,16 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
   def has_one_field?
     field.present? and field.instance_of? Avo::Fields::HasOneField
   end
+
+  def has_many_fields
+    return [] if @reflection.present?
+    
+    @resource.get_items.select do |item|
+      item.is_field? && item.type == 'has_many' && item.visible_on?(:show) && item.visible? && item.authorized?
+    end
+  end
+
+  def has_has_many_fields?
+    has_many_fields.any?
+  end
 end

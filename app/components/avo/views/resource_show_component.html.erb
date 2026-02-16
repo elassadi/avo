@@ -111,6 +111,9 @@
             <% end %>
           <% end %>
           <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view %>
+          <% if has_has_many_fields? %>
+            <%= render Avo::HasManyVisibilityMenuComponent.new(resource: @resource, has_many_fields: has_many_fields) %>
+          <% end %>
           <% if can_see_the_edit_button? %>
             <%= a_link edit_path,
                 color: :primary,
@@ -124,6 +127,9 @@
             style: :text,
             icon: 'arrow-left' do %>
             <%= t('avo.go_back') %>
+          <% end %>
+          <% if has_has_many_fields? %>
+            <%= render Avo::HasManyVisibilityMenuComponent.new(resource: @resource, has_many_fields: has_many_fields) %>
           <% end %>
           <% if can_see_the_destroy_button? %>
             <%= a_link destroy_path,
