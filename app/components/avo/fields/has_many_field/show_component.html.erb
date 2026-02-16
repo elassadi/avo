@@ -11,15 +11,25 @@
     <div class="flex-1 flex flex-col xl:flex-row justify-between mb-4">
       <div class="overflow-hidden flex flex-col">
         <div class="text-2xl tracking-normal font-semibold text-gray-800 truncate items-center flex flex-1 cursor-pointer hover:text-gray-900 transition-colors">
-          <div class="flex items-center gap-3">
-            <svg class="avo-has-many-toggle-icon w-6 h-6 text-gray-500 transition-transform duration-200 flex-shrink-0"
-                 data-has-many-collapsible-target="icon"
-                 fill="none"
-                 stroke="currentColor"
-                 viewBox="0 0 24 24"
-                 xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-            </svg>
+          <div class="flex items-center gap-3" data-has-many-collapsible-target="iconWrapper">
+            <span class="flex-shrink-0" aria-hidden="true" data-has-many-collapsible-target="iconPlus">
+              <svg class="avo-has-many-toggle-icon w-6 h-6 text-gray-500 transition-opacity duration-200"
+                   fill="none"
+                   stroke="currentColor"
+                   viewBox="0 0 24 24"
+                   xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+              </svg>
+            </span>
+            <span class="flex-shrink-0 hidden" aria-hidden="true" data-has-many-collapsible-target="iconMinus">
+              <svg class="avo-has-many-toggle-icon w-6 h-6 text-gray-500 transition-opacity duration-200"
+                   fill="none"
+                   stroke="currentColor"
+                   viewBox="0 0 24 24"
+                   xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12H20"></path>
+              </svg>
+            </span>
             <span><%= field_label %></span>
           </div>
         </div>
@@ -60,15 +70,18 @@
   }
 
   .avo-has-many-toggle-icon {
-    @apply transition-transform duration-200;
-  }
-
-  .avo-has-many-toggle-icon.expanded {
-    @apply rotate-45;
+    @apply transition-opacity duration-200;
   }
 
   .avo-has-many-header:hover .avo-has-many-toggle-icon {
     @apply text-gray-700;
   }
 
+  [data-has-many-collapsible-target="iconWrapper"].expanded .avo-has-many-icon-plus {
+    @apply hidden;
+  }
+
+  [data-has-many-collapsible-target="iconWrapper"].expanded .avo-has-many-icon-minus {
+    @apply block;
+  }
 </style>

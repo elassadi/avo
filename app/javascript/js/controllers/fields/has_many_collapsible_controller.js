@@ -1,7 +1,7 @@
 import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
-  static targets = ['header', 'content', 'icon', 'frame']
+  static targets = ['header', 'content', 'icon', 'iconWrapper', 'iconPlus', 'iconMinus', 'frame']
   static values = {
     resourceName: String,
     fieldName: String,
@@ -11,31 +11,34 @@ export default class extends Controller {
   static STORAGE_KEY = 'fields_state'
 
   connect() {
-    // Check visibility state first
+    // Check visibility state first (hides section if user chose to hide it)
     this.checkVisibility()
 
-    // Restore state from localStorage on page load
+    // Don't expand or load content when the field is hidden
+    if (!this.isVisible()) {
+      this.collapse()
+      return
+    }
+
+    // Restore expanded state from localStorage only when visible
     const storedState = this.getStoredState()
     if (storedState === true) {
-      // Expand and load content if state was saved as expanded
       this.expand(true)
     } else {
-      // Ensure collapsed state (don't load content)
       this.collapse()
     }
   }
 
-  checkVisibility() {
+  isVisible() {
     const visibilityState = this.getVisibilityState()
     const resourceName = this.resourceNameValue
     const fieldName = this.fieldNameValue
+    if (!resourceName || !fieldName) return true
+    return visibilityState[resourceName]?.[fieldName] !== false
+  }
 
-    if (!resourceName || !fieldName) return
-
-    // Default to visible if not set
-    const isVisible = visibilityState[resourceName]?.[fieldName] !== false
-
-    if (!isVisible) {
+  checkVisibility() {
+    if (!this.isVisible()) {
       this.element.closest('.avo-has-many-collapsible').style.display = 'none'
     }
   }
@@ -56,6 +59,10 @@ export default class extends Controller {
     event.preventDefault()
     event.stopPropagation()
 
+    const expanding = !this.isExpanded()
+    const fieldName = this.fieldNameValue || 'unknown'
+    console.debug('[has-many-collapsible] toggle:', { field: fieldName, expanding })
+
     if (this.isExpanded()) {
       this.collapse()
     } else {
@@ -64,22 +71,36 @@ export default class extends Controller {
   }
 
   expand(shouldLoad = true) {
+    // Never load content when the field is hidden (user unchecked it in visibility menu)
+    if (!this.isVisible()) {
+      this.collapse()
+      return
+    }
+
+    const fieldName = this.fieldNameValue || 'unknown'
+    console.debug('[has-many-collapsible] expand:', { field: fieldName, shouldLoad })
+
     // Show content
     this.contentTarget.classList.remove('hidden')
     this.contentTarget.classList.add('expanded')
 
-    // Update icon
-    this.iconTarget.classList.add('expanded')
+    // Switch icon: show minus, hide plus (JS toggle so it works regardless of component CSS)
+    if (this.hasIconPlusTarget && this.hasIconMinusTarget) {
+      this.iconPlusTarget.classList.add('hidden')
+      this.iconMinusTarget.classList.remove('hidden')
+    } else if (this.hasIconWrapperTarget) {
+      this.iconWrapperTarget.classList.add('expanded')
+    } else if (this.hasIconTarget) {
+      this.iconTarget.classList.add('expanded')
+    }
 
-    // Load content lazily when expanding
+    // Load content lazily when expanding (only when visible)
     if (shouldLoad && this.urlValue && this.frameTarget) {
       const frameSrc = this.frameTarget.getAttribute('src')
-      // If frame doesn't have src yet, set it to trigger loading
       if (!frameSrc) {
         this.frameTarget.setAttribute('src', this.urlValue)
         this.frameTarget.setAttribute('data-loading', 'true')
       } else if (!this.frameTarget.hasAttribute('data-loaded')) {
-        // Reload if not already loaded (in case src was removed)
         this.frameTarget.setAttribute('src', this.urlValue)
         this.frameTarget.setAttribute('data-loading', 'true')
       }
@@ -90,12 +111,22 @@ export default class extends Controller {
   }
 
   collapse() {
+    const fieldName = this.fieldNameValue || 'unknown'
+    console.debug('[has-many-collapsible] collapse:', { field: fieldName })
+
     // Hide content
     this.contentTarget.classList.add('hidden')
     this.contentTarget.classList.remove('expanded')
 
-    // Update icon
-    this.iconTarget.classList.remove('expanded')
+    // Switch icon: show plus, hide minus
+    if (this.hasIconPlusTarget && this.hasIconMinusTarget) {
+      this.iconPlusTarget.classList.remove('hidden')
+      this.iconMinusTarget.classList.add('hidden')
+    } else if (this.hasIconWrapperTarget) {
+      this.iconWrapperTarget.classList.remove('expanded')
+    } else if (this.hasIconTarget) {
+      this.iconTarget.classList.remove('expanded')
+    }
 
     // Save state
     this.saveState(false)
