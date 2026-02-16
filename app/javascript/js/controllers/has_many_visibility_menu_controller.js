@@ -16,30 +16,30 @@ export default class extends Controller {
 
   initializeCheckboxes() {
     const resourceState = this.getResourceState()
-    
+
     this.checkboxTargets.forEach(checkbox => {
       const fieldName = checkbox.dataset.fieldName
       if (!fieldName) return // Skip select all checkbox
-      
+
       const fieldState = resourceState[fieldName]
       const isVisible = this.isFieldVisible(fieldState)
       checkbox.checked = isVisible
-      
+
       this.updateFieldVisibility(fieldName, isVisible)
     })
   }
 
   updateSelectAllState() {
     if (!this.hasSelectAllCheckboxTarget) return
-    
+
     // Get only field checkboxes (exclude select all checkbox)
     const fieldCheckboxes = this.checkboxTargets.filter(checkbox => checkbox.dataset.fieldName)
-    
+
     if (fieldCheckboxes.length === 0) return
-    
+
     const allChecked = fieldCheckboxes.every(checkbox => checkbox.checked)
     const someChecked = fieldCheckboxes.some(checkbox => checkbox.checked)
-    
+
     this.selectAllCheckboxTarget.checked = allChecked
     // Set indeterminate state if some but not all are checked
     this.selectAllCheckboxTarget.indeterminate = !allChecked && someChecked
@@ -55,32 +55,32 @@ export default class extends Controller {
     const checkbox = event.target
     const fieldName = checkbox.dataset.fieldName
     if (!fieldName) return // Skip if this is the select all checkbox
-    
+
     const isVisible = checkbox.checked
 
     // Update visibility state
     this.saveFieldVisibility(fieldName, isVisible)
-    
+
     // Update visibility of the field
     this.updateFieldVisibility(fieldName, isVisible)
-    
+
     // Update select all checkbox state
     this.updateSelectAllState()
   }
 
   toggleAllFields(event) {
     const selectAllChecked = event.target.checked
-    
+
     // Toggle all field checkboxes
     this.checkboxTargets.forEach(checkbox => {
       const fieldName = checkbox.dataset.fieldName
       if (!fieldName) return // Skip select all checkbox itself
-      
+
       checkbox.checked = selectAllChecked
-      
+
       // Update visibility state
       this.saveFieldVisibility(fieldName, selectAllChecked)
-      
+
       // Update visibility of the field
       this.updateFieldVisibility(fieldName, selectAllChecked)
     })

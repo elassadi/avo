@@ -13,7 +13,7 @@ export default class extends Controller {
   connect() {
     // Check visibility state first
     this.checkVisibility()
-    
+
     // Restore state from localStorage on page load
     const storedState = this.getStoredState()
     if (storedState === true) {
@@ -29,12 +29,12 @@ export default class extends Controller {
     const visibilityState = this.getVisibilityState()
     const resourceName = this.resourceNameValue
     const fieldName = this.fieldNameValue
-    
+
     if (!resourceName || !fieldName) return
 
     // Default to visible if not set
     const isVisible = visibilityState[resourceName]?.[fieldName] !== false
-    
+
     if (!isVisible) {
       this.element.closest('.avo-has-many-collapsible').style.display = 'none'
     }
@@ -118,13 +118,13 @@ export default class extends Controller {
     // Find the panel header row that contains the title
     // The structure is: div.flex-1.flex.flex-col.xl:flex-row.justify-between.mb-4 > div > div[data-target="title"]
     const titleElement = this.frameTarget.querySelector('[data-target="title"]')
-    
+
     if (titleElement) {
       // Find the parent header row (the one with mb-4 class)
       let parent = titleElement.parentElement
       while (parent && parent !== this.frameTarget) {
-        if (parent.classList.contains('mb-4') && 
-            parent.classList.contains('flex') && 
+        if (parent.classList.contains('mb-4') &&
+            parent.classList.contains('flex') &&
             parent.classList.contains('flex-col')) {
           parent.style.display = 'none'
           break
