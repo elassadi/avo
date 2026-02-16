@@ -2,17 +2,17 @@
   <div class="relative inline-flex"
        data-controller="has-many-visibility-menu toggle-panel"
        data-has-many-visibility-menu-resource-name-value="<%= resource_name %>">
-    <%= a_button style: :text,
+    <%= a_button style: :outline,
       type: :button,
-      color: :gray,
-      compact: true,
-      size: :xs,
+      color: :primary,
+      size: :md,
       class: "focus:outline-none w-auto flex-shrink-0",
       icon: 'heroicons/outline/bars-3',
       title: t('avo.fields_visibility', default: 'Fields Visibility'),
       'data-action': "click->toggle-panel#togglePanel",
       'data-toggle-panel-target': 'button',
       'data-tippy': 'tooltip' do %>
+      <%= t('avo.fields_visibility', default: 'Fields Visibility') %>
     <% end %>
     <div
       class="absolute inset-auto xl:right-0 top-full bg-white w-full sm:w-auto sm:min-w-[300px] mt-2 z-40 shadow-modal rounded overflow-hidden hidden"
