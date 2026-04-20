@@ -1,0 +1,14 @@
+<div class="flex items-center border-b border-gray-200 px-4" style="column-gap: 1.5rem;">
+  <% @scopes.each do |scope| %>
+    <%= link_to scope_path(scope),
+      data: { turbo_frame: @turbo_frame.presence || "_top" },
+      title: tooltip(scope),
+      style: "margin-bottom: -1px;",
+      class: [
+        "flex items-center py-3 px-1 text-sm font-medium whitespace-nowrap border-b-2",
+        active?(scope) ? "border-blue-500 text-blue-600" : "border-transparent text-gray-600 hover:text-gray-800"
+      ].join(" ") do %>
+      <%= label(scope) %>
+    <% end %>
+  <% end %>
+</div>

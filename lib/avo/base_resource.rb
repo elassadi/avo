@@ -37,6 +37,7 @@ module Avo
     class_attribute :devise_password_optional, default: false
     class_attribute :actions_loader
     class_attribute :filters_loader
+    class_attribute :scopes_loader
     class_attribute :grid_loader
     class_attribute :visible_on_sidebar, default: true
     class_attribute :unscoped_queries_on_index, default: false
@@ -80,10 +81,18 @@ module Avo
         self.filters_loader.use filter
       end
 
-      # This is the search_query scope
-      # This should be removed and passed to the search block
-      def scope
-        query_scope
+      # Dual-purpose:
+      # - No argument: returns `query_scope` (legacy alias used by the search controller).
+      # - With a scope class: registers it as an Avo::Scopes entry on this resource.
+      #
+      # `as:` gives each registration a stable identity. Required when registering the same
+      # class more than once with different arguments — otherwise their URL params collide.
+      def scope(scope_class = nil, arguments: {}, as: nil)
+        return query_scope if scope_class.nil?
+
+        self.scopes_loader ||= Avo::Loaders::ScopesLoader.new
+        id = as.presence || scope_class.name.underscore.tr("/", "_")
+        self.scopes_loader.use(class: scope_class, arguments: arguments, id: id)
       end
 
       # This resolves the scope when doing "where" queries (not find queries)
@@ -181,6 +190,12 @@ module Avo
       filter = get_filters.find { |filter| filter[:class] == filter_class.constantize }
 
       filter[:arguments]
+    end
+
+    def get_scopes
+      return [] if self.class.scopes_loader.blank?
+
+      self.class.scopes_loader.bag
     end
 
     def get_actions

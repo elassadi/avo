@@ -8,6 +8,7 @@ module Avo
     before_action :set_resource
     before_action :hydrate_resource
     before_action :set_applied_filters, only: :index
+    before_action :set_applied_scope, only: :index
     before_action :set_model, only: [:show, :edit, :destroy, :update, :order]
     before_action :set_model_to_fill
     before_action :set_edit_title_and_breadcrumbs, only: [:edit, :update]
@@ -22,6 +23,7 @@ module Avo
 
       set_index_params
       set_filters
+      set_scopes
       set_actions
 
       # If we don't get a query object predefined from a child controller like associations, just spin one up
@@ -55,6 +57,15 @@ module Avo
           field.sortable.call(@query, @index_params[:sort_direction])
         else
           @query.order("#{@resource.model_class.table_name}.#{@index_params[:sort_by]} #{@index_params[:sort_direction]}")
+        end
+      end
+
+      # Apply the active scope before filters so filters narrow within the selected tab.
+      if @applied_scope.present?
+        scope_entry = @resource.get_scopes.find { |s| s[:id] == @applied_scope }
+        if scope_entry.present?
+          @query = scope_entry[:class].new(arguments: scope_entry[:arguments], id: scope_entry[:id])
+            .apply_query(request, @query, resource: @resource)
         end
       end
 
@@ -336,6 +347,21 @@ module Avo
         .select do |filter|
           filter.visible_in_view(resource: @resource, parent_resource: @parent_resource)
         end
+    end
+
+    def set_scopes
+      @scopes = @resource
+        .get_scopes
+        .map do |scope|
+          scope[:class].new(arguments: scope[:arguments], id: scope[:id])
+        end
+        .select do |scope|
+          scope.visible_in_view(resource: @resource, parent_resource: @parent_resource)
+        end
+    end
+
+    def set_applied_scope
+      @applied_scope = params[:scope].presence
     end
 
     def set_actions

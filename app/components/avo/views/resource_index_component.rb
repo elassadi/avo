@@ -11,6 +11,8 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     pagy: nil,
     index_params: {},
     filters: [],
+    scopes: [],
+    applied_scope: nil,
     actions: [],
     reflection: nil,
     turbo_frame: "",
@@ -25,6 +27,8 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     @pagy = pagy
     @index_params = index_params
     @filters = filters
+    @scopes = scopes
+    @applied_scope = applied_scope
     @actions = actions
     @reflection = reflection
     @turbo_frame = turbo_frame

@@ -44,6 +44,7 @@ module Avo
     cards: ["app", "avo", "cards"],
     fields: ["app", "avo", "fields"],
     filters: ["app", "avo", "filters"],
+    scopes: ["app", "avo", "scopes"],
     actions: ["app", "avo", "actions"],
     resources: ["app", "avo", "resources"],
     dashboards: ["app", "avo", "dashboards"],
